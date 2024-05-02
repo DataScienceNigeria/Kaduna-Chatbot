@@ -1,10 +1,12 @@
 from flask import Flask, send_file
+from flask import jsonify
 import pandas as pd
 import re
 import math
 import json
 
 app = Flask(__name__)
+app.json.sort_keys = False
 
 data_csv = pd.read_csv('apiWorkBook.csv', low_memory=False)
 data_csv['LGA'] = data_csv['LGA'].str.replace("/", "").str.replace("'", "")
@@ -72,15 +74,17 @@ def settlements(hospital):
 def hospital_status(hospital):
     hospital = hospital.capitalize()
     specific_clinic_rows = data_csv[data_csv['Health Facility'].str.capitalize() == hospital]
-    ownership = specific_clinic_rows['Ownership'].iloc[0]
-    facility_type = specific_clinic_rows['Facility Type'].iloc[0]
-    data = {
-        'Ownership': ownership,
-        'Facility Type': facility_type
-    }
-    return json.dumps(data)
-    # formatted_string = f'Ownership: {ownership} <br> Facility Type: {facility_type}'
-    # return formatted_string
+    columns = ['Ownership', 'Facility Type']
+    
+    data = {}
+
+    for column in columns:
+        value = specific_clinic_rows.iloc[0][column]
+        if pd.notna(value):
+            data[column] = value
+
+    return jsonify(data)
+    
 
 @app.route('/lga/ward/hospital/<hospital>/humanResources')
 def human_resources(hospital):
@@ -89,40 +93,48 @@ def human_resources(hospital):
     columns = ['OFFICER IN CHARGE', 'Phone number 0', 'Permanent Technical Staff', 'Adhoc Technical Staff (BHCPF, LGA, etc)', 'Volunteer Technical Staff',
                'Permanent Non-Technical Staff', 'Name of Ward CE Focal Persion', 'Phone Number 3']
     
-    data = ""
+    data = {}
     
     for column in columns:
         value = specific_clinic_rows.iloc[0][column]
         if value in ['nan', 'nan']:
-            data += f"{column}: This information is currently not available<br><br>"
+            data[column] = 'This information is currently not available \n\n'
         elif 'phone number' in column.lower():
             formatted_number = format_phone_number(value)
-            data += f"{column}: {formatted_number}<br><br>"
+            data[column] = formatted_number
         else:
             formatted_count = format_count(value)
-            data += f"{column}: {formatted_count}<br><br>"
+            data[column] = formatted_count
 
-    return data
+    return jsonify(data)
 
-@app.route('/lga/ward/hospital/settlement/<settlement>/population')
-def settlement_population(settlement):
+@app.route('/lga/ward/hospital/<hospital>/settlement/<settlement>/population')
+def settlement_population(hospital, settlement):
+    hospital = hospital.capitalize()
     settlement = settlement.capitalize()
-    settlement_info = data_csv[data_csv['Settlement'].str.capitalize() == settlement].loc[:,'Total Population of the Settlement':'Mentally Challenged']
-    data = ""
+    settlement_info = data_csv[(data_csv['Health Facility'].str.capitalize() == hospital) &
+                               (data_csv['Settlement'].str.capitalize() == settlement)].loc[:,'Total Population of the Settlement':'Mentally Challenged']
+    data = {}
+    
     for column in settlement_info.columns:
         value = settlement_info[column].iloc[0]
         if pd.notna(value):
-            data += f"{column}: {rounded_number(value)}<br><br>"
+        #     data += f"{column}: {rounded_number(value)}"
+        # else:
+        #     data += f"{column}: This information is currently not available"
+            data[column] = rounded_number(value)
         else:
-            data += f"{column}: This information is currently not available<br><br>"
-
-    return data
+            data[column] = "This information is currently not available"
+    return jsonify(data)
 
 @app.route('/lga/ward/hospital/<hospital>/map')
 def show_map(hospital):
     hospital = hospital.capitalize()
     map_url = data_csv[data_csv['Health Facility'].str.capitalize() == hospital]['Catchment Url'].iloc[0]
-    return send_file(map_url)
+    # return send_file(map_url)
+    map_url = [map_url]
+    # map_url.append('Go back')
+    return map_url
     #return f"<img src={map_url} alt= 'Map' >"
 
 @app.route('/lga/ward/hospital/<hospital>/cmap/')
@@ -133,30 +145,34 @@ def show_c_map(hospital):
     map_url.append('Go back')
     return map_url
 
-@app.route('/lga/ward/hospital/settlement/<settlement>/profile')
-def settlement_profile(settlement):
+@app.route('/lga/ward/hospital/<hospital>/settlement/<settlement>/profile')
+def settlement_profile(hospital, settlement):
+    hospital = hospital.capitalize()
     settlement = settlement.capitalize()
-    settlement_info = data_csv[data_csv['Settlement'].str.capitalize() == settlement]
-    columns = ['HTR (Yes/No)','Security compromised (Yes/No)','Name of Mai Unguwa', 
-    'Phone Number 1','Name of Primary school/Quranic & Ismamic School',
-    'Church/Mosque','Market/Play ground','Name of Community Volunteer',
-    'Phone Number 2', 'Distance to Health Facility (Km)']
-    data = ""
-    x = 0
-    for column in columns:
-        value = settlement_info.at[0, column]
-        if pd.notna(value):
-            if 'phone number' in column.lower():
-                data += f'{column}: {format_phone_number(value)}<br><br>'
-            # elif x == 0 or x == 6:
-            #     data += f'{column}: {value}\t'
+    settlement_info = data_csv[(data_csv['Health Facility'].str.capitalize() == hospital) & 
+                               (data_csv['Settlement'].str.capitalize() == settlement)]
+    columns = ['HTR (Yes/No)', 'Security compromised (Yes/No)', 'Name of Mai Unguwa',
+               'Phone Number 1', 'Name of Primary school/Quranic & Ismamic School',
+               'Church/Mosque', 'Market/Play ground', 'Name of Community Volunteer',
+               'Phone Number 2', 'Distance to Health Facility (Km)']
+    data = {}
+    
+    for _, row in settlement_info.iterrows():
+        for column in columns:
+            value = row[column]
+            if pd.notna(value):
+                if 'phone number' in column.lower():
+                    data[column] = format_phone_number(value)
+                else:
+                    data[column] = value
             else:
-                data += f'{column}: {value}<br><br>'
-        else:
-            data += f'{column}: This information is currently not available<br><br>'
-
-        x+=1
-    return data
+                data[column] = 'This information is currently not available'
+        #data += "<br>"  # Add a separator between rows
+    
+    if data:
+        return jsonify(data)
+    else:
+        return "Settlement information not found within this phc."
 
 if __name__ == '__main__':
     app.run(debug=True)
