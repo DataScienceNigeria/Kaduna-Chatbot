@@ -131,7 +131,7 @@ def settlement_population(hospital, settlement):
 def show_map(hospital):
     hospital = hospital.capitalize()
     map_url = data_csv[data_csv['Health Facility'].str.capitalize() == hospital]['Catchment Url'].iloc[0]
-    return map_url
+    return jsonify(map_url)
     
 @app.route('/lga/ward/hospital/<hospital>/cmap/')
 def show_c_map(hospital):
