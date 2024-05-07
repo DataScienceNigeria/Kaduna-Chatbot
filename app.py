@@ -47,7 +47,7 @@ def lgas():
 
 @app.route('/lga/index/<lga_index>')
 def wardname(lga_index):
-    lga_index = int(lga_index) - 1
+    lga_index = int(lga_index)
     if lga_index < 0 or lga_index >= len(data_csv):
         return "Invalid index"
     
