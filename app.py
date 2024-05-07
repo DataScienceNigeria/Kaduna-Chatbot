@@ -47,14 +47,16 @@ def lgas():
 
 @app.route('/lga/index/<lga_index>')
 def wardname(lga_index):
-    lga_index = int(lga_index)
+    lga_index = int(lga_index) - 1
     if lga_index < 0 or lga_index >= len(data_csv):
         return "Invalid index"
     
-    lga = data_csv.iloc[lga_index]['LGA'].capitalize()
+    unique_lga = data_csv['LGA'].unique()
+    lga = unique_lga[lga_index].capitalize()
     associatedwards = data_csv[data_csv['LGA'].str.lower() == lga.lower()]['Ward'].dropna().unique().tolist()
     associatedwards = [ward.capitalize() for ward in associatedwards]
     associatedwards.append('Go back')
+    # return associatedwards
     return associatedwards
 
 @app.route('/lga/<lga>')
