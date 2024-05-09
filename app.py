@@ -133,9 +133,6 @@ def settlement_population(hospital, settlement):
     for column in settlement_info.columns:
         value = settlement_info[column].iloc[0]
         if pd.notna(value):
-        #     data += f"{column}: {rounded_number(value)}"
-        # else:
-        #     data += f"{column}: This information is currently not available"
             data[column] = rounded_number(value)
         else:
             data[column] = "This information is currently not available"
@@ -262,17 +259,41 @@ def settlement_hftools(hospital, settlement):
     settlement = settlement.capitalize()
     settlement_info = data_csv[(data_csv['Health Facility'].str.capitalize() == hospital) &
                                (data_csv['Settlement'].str.capitalize() == settlement)].loc[:,'OPD REGISTER (1 per HF)':'Envelopes']
-    data = ""
-    for column in settlement_info.columns.tolist():
-        value = settlement_info[column].tolist()[0]
-        if pd.notna(value):
-            if 'phone number' in column.lower():
-                    data += f'{column}: {format_phone_number(value)}' + "'"
+    data = {}
+
+    for _, row in settlement_info.iterrows():
+        for column in settlement_info.columns.tolist():
+            value = settlement_info[column].tolist()[0]
+            if pd.notna(value):
+                if 'phone number' in column.lower():
+                        data[column] = format_phone_number(value)
+                else:
+                        data[column] = format_count(value)
             else:
-                    data += f'{column}: {format_count(value)}' + "'"
-        else:
-                data += f'{column}: This information is currently not available'
-    return jsonify(data)
+                    data += f'{column}: This information is currently not available'
+    
+    if data:
+        return jsonify(data)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+    # data = {}
+    
+    # for _, row in settlement_info.iterrows():
+    #     for column in columns:
+    #         value = row[column]
+    #         if pd.notna(value):
+    #             if 'phone number' in column.lower():
+    #                 data[column] = format_phone_number(value)
+    #             else:
+    #                 data[column] = value
+    #         else:
+    #             data[column] = 'This information is currently not available'
+    #     #data += "<br>"  # Add a separator between rows
+    
+    # if data:
+    #     return jsonify(data)
+    # else:
+    #     return "Settlement information not found within this phc."
