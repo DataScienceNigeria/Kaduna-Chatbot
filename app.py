@@ -187,17 +187,21 @@ def settlement_familyplanning(hospital, settlement):
     settlement = settlement.capitalize()
     settlement_info = data_csv[(data_csv['Health Facility'].str.capitalize() == hospital) &
                                (data_csv['Settlement'].str.capitalize() == settlement)].loc[:,'MINI PILLS':'NORTISTERAT INJ']
-    data = ""
-    for column in settlement_info.columns:
-        value = settlement_info[column].iloc[0]
-        if pd.notna(value):
-            if 'phone number' in column.lower():
-                    data += f'{column}: {format_phone_number(value)}' + "'"
+    data = {}
+    
+    for _, row in settlement_info.iterrows():
+        for column in settlement_info.columns.tolist():
+            value = settlement_info[column].tolist()[0]
+            if pd.notna(value):
+                if 'phone number' in column.lower():
+                        data[column] = format_phone_number(value)
+                else:
+                        data[column] = format_count(value)
             else:
-                    data += f'{column}: {format_count(value)}' + "'"
-        else:
-                data += f'{column}: This information is currently not available'
-    return jsonify(data)
+                    data += f'{column}: This information is currently not available'
+    
+    if data:
+        return jsonify(data)
 
 @app.route('/lga/ward/hospital/<hospital>/settlement/<settlement>/immunization')
 def settlement_immunization(hospital, settlement):
@@ -205,17 +209,21 @@ def settlement_immunization(hospital, settlement):
     settlement = settlement.capitalize()
     settlement_info = data_csv[(data_csv['Health Facility'].str.capitalize() == hospital) &
                                (data_csv['Settlement'].str.capitalize() == settlement)].loc[:,'BCG':'Safety boxes']
-    data = ""
-    for column in settlement_info.columns.tolist():
-        value = settlement_info[column].tolist()[0]
-        if pd.notna(value):
-            if 'phone number' in column.lower():
-                    data += f'{column}: {format_phone_number(value)}' + "'"
+    data = {}
+
+    for _, row in settlement_info.iterrows():
+        for column in settlement_info.columns.tolist():
+            value = settlement_info[column].tolist()[0]
+            if pd.notna(value):
+                if 'phone number' in column.lower():
+                        data[column] = format_phone_number(value)
+                else:
+                        data[column] = format_count(value)
             else:
-                    data += f'{column}: {format_count(value)}' + "'"
-        else:
-                data += f'{column}: This information is currently not available'
-    return jsonify(data)
+                    data += f'{column}: This information is currently not available'
+    
+    if data:
+        return jsonify(data)
 
 @app.route('/lga/ward/hospital/<hospital>/settlement/<settlement>/malaria')
 def settlement_malaria(hospital, settlement):
@@ -223,17 +231,21 @@ def settlement_malaria(hospital, settlement):
     settlement = settlement.capitalize()
     settlement_info = data_csv[(data_csv['Health Facility'].str.capitalize() == hospital) &
                                (data_csv['Settlement'].str.capitalize() == settlement)].loc[:,'RDT FOR MALARIA':'Vit-A']
-    data = ""
-    for column in settlement_info.columns.tolist():
-        value = settlement_info[column].tolist()[0]
-        if pd.notna(value):
-            if 'phone number' in column.lower():
-                    data += f'{column}: {format_phone_number(value)}' + "'"
+    data = {}
+    
+    for _, row in settlement_info.iterrows():
+        for column in settlement_info.columns.tolist():
+            value = settlement_info[column].tolist()[0]
+            if pd.notna(value):
+                if 'phone number' in column.lower():
+                        data[column] = format_phone_number(value)
+                else:
+                        data[column] = format_count(value)
             else:
-                    data += f'{column}: {format_count(value)}' + "'"
-        else:
-                data += f'{column}: This information is currently not available'
-    return jsonify(data)
+                    data += f'{column}: This information is currently not available'
+    
+    if data:
+        return jsonify(data)
 
 @app.route('/lga/ward/hospital/<hospital>/settlement/<settlement>/consumables')
 def settlement_consumables(hospital, settlement):
@@ -241,17 +253,21 @@ def settlement_consumables(hospital, settlement):
     settlement = settlement.capitalize()
     settlement_info = data_csv[(data_csv['Health Facility'].str.capitalize() == hospital) &
                                (data_csv['Settlement'].str.capitalize() == settlement)].loc[:,'COTTON WOOL 100G (1 per HF)':'TABLE NAPKIN (ROLL)']
-    data = ""
-    for column in settlement_info.columns.tolist():
-        value = settlement_info[column].tolist()[0]
-        if pd.notna(value):
-            if 'phone number' in column.lower():
-                    data += f'{column}: {format_phone_number(value)}' + "'"
+    data = {}
+
+    for _, row in settlement_info.iterrows():
+        for column in settlement_info.columns.tolist():
+            value = settlement_info[column].tolist()[0]
+            if pd.notna(value):
+                if 'phone number' in column.lower():
+                        data[column] = format_phone_number(value)
+                else:
+                        data[column] = format_count(value)
             else:
-                    data += f'{column}: {format_count(value)}' + "'"
-        else:
-                data += f'{column}: This information is currently not available'
-    return jsonify(data)
+                    data += f'{column}: This information is currently not available'
+    
+    if data:
+        return jsonify(data)
 
 @app.route('/lga/ward/hospital/<hospital>/settlement/<settlement>/hftools')
 def settlement_hftools(hospital, settlement):
@@ -278,22 +294,3 @@ def settlement_hftools(hospital, settlement):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-    # data = {}
-    
-    # for _, row in settlement_info.iterrows():
-    #     for column in columns:
-    #         value = row[column]
-    #         if pd.notna(value):
-    #             if 'phone number' in column.lower():
-    #                 data[column] = format_phone_number(value)
-    #             else:
-    #                 data[column] = value
-    #         else:
-    #             data[column] = 'This information is currently not available'
-    #     #data += "<br>"  # Add a separator between rows
-    
-    # if data:
-    #     return jsonify(data)
-    # else:
-    #     return "Settlement information not found within this phc."
