@@ -297,6 +297,7 @@ def settlement_hftools(hospital, settlement):
 def settlement_pop_compute(hospital, settlement, total_pop):
     hospital = hospital.capitalize()
     settlement = settlement.capitalize()
+    total_pop = int(total_pop)
     
     under_1 = format_count(total_pop * 0.04)
     under_5 = format_count(total_pop * 0.20)
@@ -316,7 +317,7 @@ def settlement_pop_compute(hospital, settlement, total_pop):
         "Older Adolescents (15 to 19 years)": older_adolescents
     }
     
-    return data
+    return (data)
 
 if __name__ == '__main__':
     app.run(debug=True)
