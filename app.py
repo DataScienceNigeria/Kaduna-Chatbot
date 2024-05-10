@@ -292,5 +292,31 @@ def settlement_hftools(hospital, settlement):
         return jsonify(data)
 
 
+#----computed values
+@app.route('/lga/ward/hospital/<hospital>/settlement/<settlement>/totalpop/<total_pop>')
+def settlement_pop_compute(hospital, settlement, total_pop):
+    hospital = hospital.capitalize()
+    settlement = settlement.capitalize()
+    
+    under_1 = format_count(total_pop * 0.04)
+    under_5 = format_count(total_pop * 0.20)
+    six_to_59_months = format_count(total_pop * 0.18)
+    pregnant_women = format_count(total_pop * 0.05)
+    wra = format_count(total_pop * 0.22)
+    young_adolescents = format_count(total_pop * 0.11)
+    older_adolescents = format_count(total_pop * 0.11)
+    
+    data = {
+        "Under 1": under_1,
+        "Under 5": under_5,
+        "(6 to 59 months)": six_to_59_months,
+        "Pregnant Women": pregnant_women,
+        "Women of Reproductive Age (WRA)": wra,
+        "Young Adolescents (10 to 14 years)":  young_adolescents,
+        "Older Adolescents (15 to 19 years)": older_adolescents
+    }
+    
+    return data
+
 if __name__ == '__main__':
     app.run(debug=True)
