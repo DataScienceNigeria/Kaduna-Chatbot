@@ -318,8 +318,9 @@ def settlement_pop_compute(hospital, settlement, total_pop):
     }
     
     return (data)
+
 @app.route('/lga/ward/hospital/<hospital>/settlement/<settlement>/totalpop/<total_pop>/immunization_commodities')
-def settlement_commodities_immunization(hospital, settlement, total_pop):
+def compute_settlement_immunization(hospital, settlement, total_pop):
     hospital = hospital.capitalize()
     settlement = settlement.capitalize()
     total_pop = int(total_pop)
@@ -367,7 +368,154 @@ def settlement_commodities_immunization(hospital, settlement, total_pop):
     Safety_boxes = (BCG + HepBo + IPV + Penta + PCV + Measles + Td + MenA + Yellow_fever) / 100
     data['Safety boxes'] = format_count(Safety_boxes)
     
+    return jsonify(data)
+
+@app.route('/lga/ward/hospital/<hospital>/settlement/<settlement>/totalpop/<total_pop>/familyplanning_commodities')
+def compute_settlement_familyplanning(hospital, settlement, total_pop):
+    hospital = hospital.capitalize()
+    settlement = settlement.capitalize()
+    total_pop = int(total_pop)
+    
+    data = {}
+    
+    mini_pills = format_count(7.3 * (total_pop * 0.22) * 1.1)
+    combine_pills = format_count(7.3 * (total_pop * 0.22) * 1.1)
+    male_condom = format_count(0.079 * (total_pop * 0.22) * 1.1)
+    female_condom = format_count(0.004 * (total_pop * 0.22) * 1.1)
+    iucd = format_count(0.035 * (total_pop * 0.22) * 1.1)
+    impalanon_implant = format_count(0.424 * (total_pop * 0.22) * 1.1)
+    jadel_implant = format_count(0.424 * (total_pop * 0.22) * 1.1)
+    depo_provera_inj = format_count(0.346 * (total_pop * 0.22) * 1.1)
+    nortisterat_inj = format_count(0.346 * (total_pop * 0.22) * 1.1)
+    
+    data['MINI PILLS'] = mini_pills
+    data['COMBINE PILLS'] = combine_pills
+    data['MALE CONDOM'] = male_condom
+    data['FEMALE CONDOM'] = female_condom
+    data['IUCD'] = iucd
+    data['IMPALANON (IMPLANT)'] = impalanon_implant
+    data['JADEL (IMPLANT)'] = jadel_implant
+    data['DEPO-PROVERA INJ'] = depo_provera_inj
+    data['NORTISTERAT INJ'] = nortisterat_inj
+    
+    return jsonify(data)
+
+@app.route('/lga/ward/hospital/<hospital>/settlement/<settlement>/totalpop/<total_pop>/malaria_commodities')
+def compute_settlement_malaria(total_pop, hospital, settlement):
+    hospital = hospital.capitalize()
+    settlement = settlement.capitalize()
+    total_pop = int(total_pop)
+
+    rdt_malaria = format_count(0.258 * (total_pop * 0.20) * 1.1)
+    act = format_count(0.608 * (0.258 * (total_pop * 0.20) * 1.1) * 1.1)
+    paracetamol_syrup = format_count((0.258 * (total_pop * 0.20) * 1.1) * 2)
+    zinc_ors = format_count(0.457 * (total_pop * 0.20) * 1.1)
+    disposable_amoxycillin = format_count(0.24 * (0.258 * (total_pop * 0.20) * 1.1) * 1.1)
+    fesolate_tabs = format_count(0.80 * (total_pop * 0.05) * 30 * 1.1)
+    folic_acid = format_count(0.80 * (total_pop * 0.05) * 30 * 1.1)
+    determine = format_count(0.90 * (total_pop * 0.05) * 1.1)
+    vit_a = format_count(0.80 * (0.18 * total_pop))
+
+    data = {
+        "RDT for Malaria": rdt_malaria,
+        "ACT": act,
+        "Paracetamol Syrup": paracetamol_syrup,
+        "Zinc ORS": zinc_ors,
+        "Disposable Amoxycillin DT": disposable_amoxycillin,
+        "Fesolate Tabs": fesolate_tabs,
+        "Folic Acid": folic_acid,
+        "Determine": determine,
+        "Vit-A": vit_a
+    }
+
     return data
+
+@app.route('/lga/ward/hospital/<hospital>/settlement/<settlement>/totalpop/<total_pop>/consumable_commodities')
+def compute_settlement_consumables(total_pop, hospital, settlement):
+    hospital = hospital.capitalize()
+    settlement = settlement.capitalize()
+    total_pop = int(total_pop)
+
+    data = {}
+
+    cotton_wool_100g = 0
+    plaster_elastoplast = 0
+    plaster_big = 0
+    xylocain_injection = 0
+    methylated_spirit = 0
+    jik = 0
+    liquid_soap = 0
+    tincture_of_iodine = 0
+    pt_test_kit = format_count(0.9 * (total_pop * 0.05) * 1.1)
+    urine_bottle = format_count(0.9 * (total_pop * 0.05) * 1.1)
+    disposable_gloves = format_count(0.9 * (total_pop * 0.05) * 1.1)
+    sterile_gloves = format_count(0.035 * (total_pop * 0.22) * 1.1)
+    under_lid = format_count(0.035 * (total_pop * 0.22) * 1.1)
+    table_napkin = format_count(0.035 * (total_pop * 0.22) * 1.1)
+
+    # Populate the dictionary with constant and calculated values
+    data['Cotton Wool 100g (1 per HF)'] = cotton_wool_100g
+    data['Plaster Elastoplast (1 per HF)'] = plaster_elastoplast
+    data['Plaster (Big)'] = plaster_big
+    data['Xylocain Injection (20 ML) per HF'] = xylocain_injection
+    data['Methylated Spirit (1 per HF)'] = methylated_spirit
+    data['PT Test Kit (PKT 20)'] = pt_test_kit
+    data['Urine Bottle'] = urine_bottle
+    data['Jik (1 Litre) per HF'] = jik
+    data['Disposable Gloves (PKT 100)'] = disposable_gloves
+    data['Sterile Gloves (PKT 50)'] = sterile_gloves
+    data['Liquid Soap (50 ML) per HF'] = liquid_soap
+    data['Under-Lid'] = under_lid
+    data['Tincture of Iodine (20 ML) prt HF'] = tincture_of_iodine
+    data['Table Napkin (Roll)'] = table_napkin
+
+    return data
+
+@app.route('/lga/ward/hospital/<hospital>/settlement/<settlement>/totalpop/<total_pop>/hftool_commodities')
+def compute_settlement_hftools(total_pop, hospital, settlement):
+    hospital = hospital.capitalize()
+    settlement = settlement.capitalize()
+    total_pop = int(total_pop)
+
+    data = {}
+
+    opd_register = 0
+    fp_register = 0
+    immunization_register = 0
+    anc_register = 0
+    pmctct_hct_register = 0
+    gmp_register = 0
+    out_mobile_monthly_summary = 0
+    health_facility_nhmis_monthly_summary = 0
+    hiv_client_intake_form = 0
+    hiv_request_result_form = 0
+    referral_forms = 0
+    imm_card = format_count(0.9 * (total_pop * 0.04) * 1.1)
+    family_planning_card = format_count((total_pop * 0.22) * 0.9)
+    anc_card = format_count((total_pop * 0.05) * 0.9)
+    leaflets = format_count(0.8 * (total_pop * 0.22))
+    envelopes = format_count((2 * (0.8 * (total_pop * 0.05) * 30 * 1.1)) * 1.1)
+
+    # Populate the dictionary with constant and calculated values
+    data['OPD Register (1 per HF)'] = opd_register
+    data['FP Register (1 per HF)'] = fp_register
+    data['Immunization Register (1 per HF)'] = immunization_register
+    data['ANC Register (1 per HF)'] = anc_register
+    data['PMCTCT - HCT Register (1 per HF)'] = pmctct_hct_register
+    data['GMP Register (1 per HF)'] = gmp_register
+    data['Out /Mobile Monthly Summary (1 per HF)'] = out_mobile_monthly_summary
+    data['Health Facility NHMIS Monthly Summary (1 per HF)'] = health_facility_nhmis_monthly_summary
+    data['HIV Client Intake Form (1 per HF)'] = hiv_client_intake_form
+    data['HIV Request & Result Form (1 per HF)'] = hiv_request_result_form
+    data['Referral Forms (1 per HF)'] = referral_forms
+    data['Imm Card'] = imm_card
+    data['Family Planning Card'] = family_planning_card
+    data['ANC Card'] = anc_card
+    data['Leaflets'] = leaflets
+    data['Envelopes'] = envelopes
+
+    return data
+
 
 if __name__ == '__main__':
     app.run(debug=True)
