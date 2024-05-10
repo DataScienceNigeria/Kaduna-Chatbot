@@ -318,6 +318,56 @@ def settlement_pop_compute(hospital, settlement, total_pop):
     }
     
     return (data)
+@app.route('/lga/ward/hospital/<hospital>/settlement/<settlement>/totalpop/<total_pop>/immunization_commodities')
+def settlement_commodities_immunization(hospital, settlement, total_pop):
+    hospital = hospital.capitalize()
+    settlement = settlement.capitalize()
+    total_pop = int(total_pop)
+
+    data = {}
+
+    BCG = ((total_pop * 0.04) * 0.9 * 1 * 3.33) + (((total_pop * 0.04) * 0.9 * 1 * 3.33) * 0.25)
+    data['BCG'] = format_count(BCG)
+    bOPV = ((total_pop * 0.04) * 0.9 * 1 * 1.33) + (((total_pop * 0.04) * 0.9 * 1 * 1.33) * 0.25)
+    data['bOPV'] = format_count(bOPV)
+    HepBo = ((total_pop * 0.04) * 0.9 * 1 * 1.43) + (((total_pop * 0.04) * 0.9 * 1 * 1.43) * 0.25)
+    data['HepBo'] = format_count(HepBo)
+    IPV = ((total_pop * 0.04) * 0.9 * 1 * 3.33) + (((total_pop * 0.04) * 0.9 * 1 * 3.33) * 0.25)
+    data['IPV'] = format_count(IPV)
+    Penta = ((total_pop * 0.04) * 0.9 * 3 * 1.43) + (((total_pop * 0.04) * 0.9 * 3 * 1.43) * 0.25)
+    data['Penta'] = format_count(Penta)
+    PCV = ((total_pop * 0.04) * 0.9 * 3 * 1.1) + (((total_pop * 0.04) * 0.9 * 3 * 1.1) * 0.25)
+    data['PCV'] = format_count(PCV)
+    Measles = ((total_pop * 0.04) * 0.9 * 2 * 1.43) + (((total_pop * 0.04) * 0.9 * 2 * 1.43) * 0.25)
+    data['Measles'] = format_count(Measles)
+    Td = ((total_pop * 0.05) * 0.9 * 5 * 1.33) + (((total_pop * 0.05) * 0.9 * 5 * 1.33) * 0.25)
+    data['Td'] = format_count(Td)
+    MenA = ((total_pop * 0.04) * 0.9 * 1 * 1.33) + (((total_pop * 0.04) * 0.9 * 1 * 1.33) * 0.25)
+    data['MenA'] = format_count(MenA)
+    Yellow_fever = ((total_pop * 0.04) * 0.9 * 1 * 1.43) + (((total_pop * 0.04) * 0.9 * 1 * 1.43) * 0.25)
+    data['Yellow fever'] = format_count(Yellow_fever)
+    Covid_19 = total_pop * 0.5
+    data['Covid-19'] = format_count(Covid_19)
+    AD_0_05ml = (total_pop * 0.04) * 0.9 * 1 * 1.1 * 1.25
+    data['AD 0.05ml'] = format_count(AD_0_05ml)
+    AD_0_5ml = (total_pop * 0.04) * 0.9 * 3 * 1.25
+    data['AD 0.5ml'] = format_count(AD_0_5ml)
+    Recon_2ml = BCG / 20
+    data['Recon 2ml'] = format_count(Recon_2ml)
+    Recon_5ml = (Measles + MenA + Yellow_fever) / 10
+    data['Recon 5ml'] = format_count(Recon_5ml)
+    BCG_diluent = BCG / 20
+    data['BCG diluent'] = format_count(BCG_diluent)
+    Measles_diluent = Measles / 10
+    data['Measles diluent'] = format_count(Measles_diluent)
+    Yellow_fever_diluent = Yellow_fever / 10
+    data['Yellow fever diluent'] = format_count(Yellow_fever_diluent)
+    Droppers = bOPV / 20
+    data['Droppers'] = format_count(Droppers)
+    Safety_boxes = (BCG + HepBo + IPV + Penta + PCV + Measles + Td + MenA + Yellow_fever) / 100
+    data['Safety boxes'] = format_count(Safety_boxes)
+    
+    return data
 
 if __name__ == '__main__':
     app.run(debug=True)
