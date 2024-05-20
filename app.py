@@ -45,7 +45,7 @@ def lgas():
     unique_lgas.append('Go back')
     return unique_lgas
 
-@app.route('/lga/index/<lga_index>')
+@app.route('/wa/lga/<lga_index>')
 def wardname(lga_index):
     lga_index = int(lga_index)
     if lga_index < 0 or lga_index >= len(data_csv):
@@ -67,6 +67,19 @@ def ward(lga):
     associated_wards.append('Go back')
     return associated_wards
 
+@app.route('/wa/lga/ward/<ward_index>')
+def hfname(ward_index):
+    ward_index = int(ward_index)
+    if ward_index < 0 or ward_index >= len(data_csv):
+        return "Invalid index"
+    
+    unique_lga = data_csv['Ward'].unique()
+    ward = unique_lga[ward_index].capitalize()
+    associatedhf = data_csv[data_csv['Ward'].str.lower() == ward.lower()]['Health Facility'].dropna().unique().tolist()
+    associatedhf = [hospital.capitalize() for hospital in associatedhf]
+    associatedhf.append('Go back')
+    return associatedhf
+
 @app.route('/lga/ward/<ward>')
 def hospitals(ward):
     ward = ward.capitalize()
@@ -74,6 +87,20 @@ def hospitals(ward):
     associated_hospitals = [hospital.capitalize() for hospital in associated_hospitals]
     associated_hospitals.append('Go back')
     return associated_hospitals
+
+@app.route('/wa/lga/ward/hospital/<hf_index>/settlements')
+def settlementnames(hf_index):
+    hf_index = int(hf_index)
+    if hf_index < 0 or hf_index >= len(data_csv):
+        return "input a value within the range"
+
+    unique_ward = data_csv['Health Facility'].unique()
+    hospital = unique_ward[hf_index].capitalize()
+    associatedsettlement = data_csv[data_csv['Health Facility'].str.capitalize() == hospital]['Settlement'].dropna().unique().tolist()
+    associatedsettlement = [settlement.capitalize() for settlement in associatedsettlement]
+    associatedsettlement.append('Go back')
+    # return associatedsettlement
+    return associatedsettlement
 
 @app.route('/lga/ward/hospital/<hospital>/settlements')
 def settlements(hospital):
