@@ -67,18 +67,28 @@ def ward(lga):
     associated_wards.append('Go back')
     return associated_wards
 
-@app.route('/wa/lga/ward/<ward_index>')
-def hfname(ward_index):
+@app.route('/wa/lga/<lga_index>/ward/<ward_index>')
+def hfname(lga_index, ward_index):
+    lga_index = int(lga_index)
     ward_index = int(ward_index)
-    if ward_index < 0 or ward_index >= len(data_csv):
-        return "Invalid index"
     
-    unique_lga = data_csv['Ward'].unique()
-    ward = unique_lga[ward_index].capitalize()
-    associatedhf = data_csv[data_csv['Ward'].str.lower() == ward.lower()]['Health Facility'].dropna().unique().tolist()
-    associatedhf = [hospital.capitalize() for hospital in associatedhf]
-    associatedhf.append('Go back')
-    return associatedhf
+    if lga_index < 0 or lga_index >= len(data_csv):
+        return "Invalid LGA index"
+    
+    unique_lga = data_csv['LGA'].unique()
+    lga = unique_lga[lga_index].capitalize()
+    
+    associatedwards = data_csv[data_csv['LGA'].str.lower() == lga.lower()]['Ward'].dropna().unique().tolist()
+    associatedwards = [ward.capitalize() for ward in associatedwards]
+    
+    if ward_index < 0 or ward_index >= len(associatedwards):
+        return "Invalid Ward index"
+    
+    #unique_ward = associatedwards['Ward'].unique()
+    ward = associatedwards[ward_index]
+    health_facilities = data_csv[(data_csv['LGA'].str.lower() == lga.lower()) & (data_csv['Ward'].str.lower() == ward.lower())]['Health Facility'].dropna().unique().tolist()
+    
+    return health_facilities
 
 @app.route('/lga/ward/<ward>')
 def hospitals(ward):
