@@ -13,6 +13,7 @@ data_csv['LGA'] = data_csv['LGA'].str.replace("/", "").str.replace("'", "")
 data_csv['Ward'] = data_csv['Ward'].str.replace("/", "").str.replace("'", "")
 data_csv['Health Facility'] = data_csv['Health Facility'].str.replace("/", "").str.replace("'", "")
 data_csv['Settlement'] = data_csv['Settlement'].str.replace("/", "").str.replace("'", "")
+data_csv['Coordinates'] = data_csv['Coordinates'] = data_csv['Coordinates'].astype(str).str.strip()
 
 def format_phone_number(phone_number):
     if isinstance(phone_number, float) and math.isnan(phone_number):
@@ -89,6 +90,15 @@ def hfname(lga_index, ward_index):
     health_facilities = data_csv[(data_csv['LGA'].str.lower() == lga.lower()) & (data_csv['Ward'].str.lower() == ward.lower())]['Health Facility'].dropna().unique().tolist()
     
     return health_facilities
+
+@app.route('/coordinate/<lga>/<ward>')
+def get_coordinate(lga, ward):
+    lga = lga.capitalize()
+    ward = ward.capitalize()
+    coordinate = data_csv[(data_csv['LGA'].str.capitalize() == lga) &
+                      (data_csv['Ward'].str.capitalize() == ward)]['Coordinates'].unique()[0]
+    coordinate = str(coordinate)
+    return jsonify(coordinate)
 
 @app.route('/lga/ward/<ward>')
 def hospitals(ward):
