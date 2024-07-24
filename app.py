@@ -18,12 +18,13 @@ def create_app():
     from blueprints.microplan import microplan_bp_
     from blueprints.askchat import askchat_bp
 
-    app.register_blueprint(microplan_bp_)
-    app.register_blueprint(askchat_bp)
+    # Register blueprints with URL prefixes
+    app.register_blueprint(microplan_bp_, url_prefix='/microplan')
+    app.register_blueprint(askchat_bp, url_prefix='/askchat')
 
     with app.app_context():
         from blueprints.askchat.askchat import initialize_db
-        initialize_db()
+        initialize_db(db)
 
     return app
 
