@@ -2,3 +2,6 @@
 /__pycache__/
 venv/
 .env
+blueprints/askchat/__pycache__/
+blueprints/microplan/__pycache__/
+blueprints/weather/__pycache__/
