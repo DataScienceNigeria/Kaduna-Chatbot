@@ -9,7 +9,7 @@ from langchain_openai import ChatOpenAI
 from langchain.agents.agent_toolkits import create_retriever_tool
 from langchain_community.vectorstores import FAISS
 from langchain_core.example_selectors import SemanticSimilarityExampleSelector
-from langchain_openAI import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from random import randint
 import tracemalloc
 
