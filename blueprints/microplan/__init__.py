@@ -1,5 +1,5 @@
 from flask import Blueprint
 
-askchat_bp = Blueprint("askchat", __name__)
+microplan_bp_ = Blueprint("microplan", __name__)
 
-from . import askchat  # Import the module to register routes
+from . import microplan  # Import the module to register routes
