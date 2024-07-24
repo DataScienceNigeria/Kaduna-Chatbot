@@ -18,8 +18,7 @@ askchat_bp = Blueprint("askchat", __name__, template_folder="templates")
 # Start tracing memory allocations
 tracemalloc.start()
 
-def initialize_db():
-    db = current_app.extensions['sqlalchemy'].db
+def initialize_db(db):
     queries = [
         "SELECT DISTINCT dmg_lga FROM microplan_2023_2024",
         "SELECT DISTINCT dmg_ward_di FROM microplan_2023_2024",
@@ -80,7 +79,7 @@ def chatbot(question):
     cache = current_app.extensions['cache']
     @cache.memoize(timeout=300)
     def get_response(question):
-        results = initialize_db()
+        results = initialize_db(current_app.extensions['sqlalchemy'].db)
         llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
 
         vector_db = FAISS.from_texts(results, OpenAIEmbeddings())
