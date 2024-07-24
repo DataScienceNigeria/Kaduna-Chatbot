@@ -15,6 +15,8 @@ distro==1.9.0
 faiss-cpu==1.8.0
 Flask==3.0.3
 Flask-Caching==2.3.0
+flask_migrate==4.0.7
+flask_sqlalchemy==3.1.1
 frozenlist==1.4.1
 GeoAlchemy2==0.15.1
 greenlet==3.0.3
