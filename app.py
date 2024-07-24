@@ -1,39 +1,32 @@
-import os
-import pandas as pd
-import psycopg2
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from flask_caching import Cache
-from flask import Flask, send_file
-from dotenv import load_dotenv
-from flask import jsonify
 
-from blueprints.microplan.microplan import microplan_bp_
-from blueprints.weather.weather import weather_bp
-from blueprints.askchat.askchat import askchat_bp
+db = SQLAlchemy()
+migrate = Migrate()
+cache = Cache()
 
-app = Flask(__name__)
-app.json.sort_keys = False
-app.register_blueprint(microplan_bp_)
-app.register_blueprint(weather_bp, url_prefix="/weather")
-app.register_blueprint(askchat_bp, url_prefix="/askchat")
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object('config.Config')
 
-app.config['CACHE_TYPE'] = 'simple'
-cache = Cache(app)
+    db.init_app(app)
+    migrate.init_app(app, db)
+    cache.init_app(app)
 
-conn = psycopg2.connect(
-    host=os.getenv("DB_HOST"),
-    database=os.getenv("DB_NAME"),
-    user=os.getenv("DB_USERNAME"),
-    password=os.getenv("DB_PASSWORD"),
-    port=os.getenv("DB_PORT")
-)
-print("Connection successful")
+    from blueprints.microplan import microplan_bp_
+    from blueprints.askchat import askchat_bp
 
-cur = conn.cursor()
-sql = pd.read_sql_query("SELECT * FROM master_microplan", conn)
+    app.register_blueprint(microplan_bp_)
+    app.register_blueprint(askchat_bp)
 
-cur.close()
-conn.close()
+    with app.app_context():
+        from blueprints.askchat.askchat import initialize_db
+        initialize_db()
 
+    return app
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    app = create_app()
     app.run(debug=True)
