@@ -1,6 +1,7 @@
 *.checkpoints
 /__pycache__/
 venv/
+*.env
 .env
 blueprints/askchat/__pycache__/
 blueprints/microplan/__pycache__/
