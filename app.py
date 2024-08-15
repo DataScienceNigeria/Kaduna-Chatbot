@@ -4,9 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_caching import Cache
 
-# from askchat import initialize_db
-# from microplan import initialize_db
-
 db = SQLAlchemy()
 migrate = Migrate()
 cache = Cache()
@@ -19,14 +16,17 @@ def create_app():
     app.config.from_object('config.Config')
 
     db.init_app(app)
+    app.extensions['db'] = db
     migrate.init_app(app, db)
     cache.init_app(app)
 
     from microplan import microplan_bp_, initialize_db
     from askchat import askchat_bp, initialize_db as initialize_askchat_db
+    from weather import weather_bp
 
     app.register_blueprint(microplan_bp_, url_prefix='/microplan')
     app.register_blueprint(askchat_bp, url_prefix='/askchat')
+    app.register_blueprint(weather_bp, url_prefix='/weather')
 
     with app.app_context():
         # Initialize the database for microplan
