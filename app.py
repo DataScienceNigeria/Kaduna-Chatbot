@@ -1,4 +1,5 @@
 from flask import Flask, send_file
+from flask_cors import CORS
 from flask import jsonify
 import pandas as pd
 import re
@@ -6,6 +7,7 @@ import math
 import json
 
 app = Flask(__name__)
+CORS(app)
 app.json.sort_keys = False
 
 data_csv = pd.read_csv('apiWorkBook.csv', low_memory=False)
