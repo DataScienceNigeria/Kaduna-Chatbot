@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from sqlalchemy import text
 from flask import Blueprint, jsonify, current_app
 import pandas as pd
+from flask_cors import CORS
 from random import randint
 import re
 import os
@@ -9,6 +10,7 @@ import math
 import json
 
 microplan_bp_ = Blueprint("microplan", __name__, template_folder="templates")
+CORS(microplan_bp_)
 
 load_dotenv()
 
@@ -53,7 +55,6 @@ def lgas():
     unique_lgas = df['lga'].dropna().unique().tolist()
     unique_lgas = [lga.capitalize() for lga in unique_lgas]
     unique_lgas.append('Go back')
-    print(unique_lgas)
     return unique_lgas
 
 @microplan_bp_.route('/wa/lga/<lga_index>')
@@ -68,7 +69,6 @@ def wardname(lga_index):
     associatedwards = df[df['lga'].str.lower() == lga.lower()]['ward'].dropna().unique().tolist()
     associatedwards = [ward.capitalize() for ward in associatedwards]
     associatedwards.append('Go back')
-    # return associatedwards
     return associatedwards
 
 @microplan_bp_.route('/lga/<lga>')

@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 import pandas as pd
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -12,6 +13,7 @@ cache = Cache()
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
     app.json.sort_keys = False
     app.config.from_object('config.Config')
 

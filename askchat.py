@@ -4,12 +4,13 @@ from flask import Blueprint, jsonify, current_app
 from sqlalchemy import text
 from langchain_community.utilities import SQLDatabase
 from geoalchemy2 import Geometry
-from langchain_community.agent_toolkits import create_sql_agent
+from langchain_community.agent_toolkits import SQLDatabaseToolkit, create_sql_agent
 from langchain_openai import ChatOpenAI
 from langchain.agents.agent_toolkits import create_retriever_tool
 from langchain_community.vectorstores import FAISS
 from langchain_core.example_selectors import SemanticSimilarityExampleSelector
 from langchain_openai import OpenAIEmbeddings
+from sqlalchemy import create_engine
 from random import randint
 import tracemalloc
 
@@ -32,6 +33,8 @@ def initialize_db(db):
             res = [el for sub in res for el in sub if el]
             res = [re.sub(r"\b\d+\b", "", string).strip() for string in res]
             results.extend(res)
+    
+    print(results)
     return results
 
 examples = [
@@ -77,10 +80,19 @@ Here are some examples of user inputs and their corresponding SQL queries:"""
 @askchat_bp.route('/<question>')
 def chatbot(question):
     cache = current_app.extensions['cache']
-    @cache.memoize(timeout=300)
+
+    #@cache.memoize(timeout=300)
     def get_response(question):
-        results = initialize_db(current_app.extensions['sqlalchemy'].db)
+        db = current_app.extensions['db']
+        results = initialize_db(db)
+
+        db_uri = current_app.config['SQLALCHEMY_DATABASE_URI']
+        engine = create_engine(db_uri)
+        sql_database = SQLDatabase.from_uri(db_uri)
+
         llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+        # results = initialize_db(current_app.extensions['sqlalchemy'].db)
+    
 
         vector_db = FAISS.from_texts(results, OpenAIEmbeddings())
         retriever = vector_db.as_retriever(search_kwargs={"k": 5})
@@ -89,14 +101,16 @@ def chatbot(question):
         retriever_tool = create_retriever_tool(
             retriever,
             name="proper_nouns",
-            description=description,)
+            description=description,
+        )
 
         example_selector = SemanticSimilarityExampleSelector.from_examples(
             examples,
             OpenAIEmbeddings(),
             FAISS,
             k=5,
-            input_keys=["input"],)
+            input_keys=["input"],
+        )
 
         from langchain_core.prompts import (
             ChatPromptTemplate,
@@ -121,9 +135,11 @@ def chatbot(question):
                 MessagesPlaceholder("agent_scratchpad"),
             ])
 
+        # toolkit = SQLDatabaseToolkit(db=sql_database, llm=llm)
+        
         agent = create_sql_agent(
             llm=llm,
-            db=current_app.extensions['sqlalchemy'].db,
+            db=sql_database,
             extra_tools=[retriever_tool],
             prompt=full_prompt,
             agent_type="openai-tools",
