@@ -23,11 +23,11 @@ def create_app():
     cache.init_app(app)
 
     from microplan import microplan_bp_, initialize_db
-    from askchat import askchat_bp, initialize_db as initialize_askchat_db
+    #from askchat import askchat_bp, initialize_db as initialize_askchat_db
     from weather import weather_bp
 
     app.register_blueprint(microplan_bp_, url_prefix='/microplan')
-    app.register_blueprint(askchat_bp, url_prefix='/askchat')
+    #app.register_blueprint(askchat_bp, url_prefix='/askchat')
     app.register_blueprint(weather_bp, url_prefix='/weather')
 
     with app.app_context():
@@ -41,7 +41,7 @@ def create_app():
         app.extensions['microplan_df'] = microplan.df
 
         # Initialize the database for askchat if needed
-        initialize_askchat_db(db)
+        #initialize_askchat_db(db)
         #initialize_db(db)
 
     return app
