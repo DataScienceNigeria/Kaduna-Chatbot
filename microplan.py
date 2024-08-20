@@ -53,7 +53,6 @@ def lgas():
     unique_lgas = df['lga'].dropna().unique().tolist()
     unique_lgas = [lga.capitalize() for lga in unique_lgas]
     unique_lgas.append('Go back')
-    print(unique_lgas)
     return unique_lgas
 
 @microplan_bp_.route('/wa/lga/<lga_index>')
