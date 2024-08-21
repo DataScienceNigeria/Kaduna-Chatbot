@@ -9,8 +9,6 @@ db = SQLAlchemy()
 migrate = Migrate()
 cache = Cache()
 
-#app = Flask(__name__)
-
 def create_app():
     app = Flask(__name__)
     CORS(app)
@@ -46,13 +44,8 @@ def create_app():
 
     return app
 
-#app = create_app
-
-# Register blueprints with URL prefixes
-# app.register_blueprint(microplan_bp_, url_prefix='/microplan')
-# app.register_blueprint(askchat_bp, url_prefix='/askchat')
+# Ensure the app instance is created globally
+app = create_app()
 
 if __name__ == "__main__":
-    app = create_app()
-    app.json.sort_keys = False
     app.run(debug=True, host="0.0.0.0", port=8000)
