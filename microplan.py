@@ -3,7 +3,6 @@ from sqlalchemy import text
 from flask import Blueprint, jsonify, current_app
 import pandas as pd
 from flask_cors import CORS
-from random import randint
 import re
 import os
 import math
@@ -135,7 +134,6 @@ def settlementnames(hf_index):
     associatedsettlement = df[df['health_facility'].str.capitalize() == hospital]['settlement'].dropna().unique().tolist()
     associatedsettlement = [settlement.capitalize() for settlement in associatedsettlement]
     associatedsettlement.append('Go back')
-    # return associatedsettlement
     return associatedsettlement
 
 @microplan_bp_.route('/lga/ward/hospital/<hospital>/settlements')
@@ -153,7 +151,7 @@ def hospital_status(hospital):
     df = current_app.extensions['microplan_df']
     hospital = hospital.capitalize()
     specific_clinic_rows = df[df['health_facility'].str.capitalize() == hospital]
-    columns = ['Ownership', 'Facility Type']
+    columns = ['ownership_type', 'facility_type']
     
     data = {}
 
@@ -170,8 +168,8 @@ def human_resources(hospital):
     df = current_app.extensions['microplan_df']
     hospital = hospital.capitalize()
     specific_clinic_rows = df[df['health_facility'].str.capitalize() == hospital]
-    columns = ['OFFICER IN CHARGE', 'Phone number 0', 'Permanent Technical Staff', 'Adhoc Technical Staff (BHCPF, lga, etc)', 'Volunteer Technical Staff',
-               'Permanent Non-Technical Staff', 'Name of Ward CE Focal Persion', 'Phone Number 3']
+    columns = ['officer_in_charge', 'phone_number', 'permanent_technical_staff', 'adhoc_technical_staff', 'volunteer_technical_staff',
+               'permanent_non_technical_staff', 'name_of_ward_ce_focal_person', 'phone_number_1']
     
     data = {}
     
@@ -194,7 +192,7 @@ def settlement_population(hospital, settlement):
     hospital = hospital.capitalize()
     settlement = settlement.capitalize()
     settlement_info = df[(df['health_facility'].str.capitalize() == hospital) &
-                               (df['settlement'].str.capitalize() == settlement)].loc[:,'Total Population of the settlement':'Mentally Challenged']
+                               (df['settlement'].str.capitalize() == settlement)].loc[:,'total_population':'mental_illness']
     data = {}
     
     for column in settlement_info.columns:
@@ -256,7 +254,7 @@ def settlement_familyplanning(hospital, settlement):
     hospital = hospital.capitalize()
     settlement = settlement.capitalize()
     settlement_info = df[(df['health_facility'].str.capitalize() == hospital) &
-                               (df['settlement'].str.capitalize() == settlement)].loc[:,'MINI PILLS':'NORTISTERAT INJ']
+                               (df['settlement'].str.capitalize() == settlement)].loc[:,'mini_pills':'nortisterat_inj']
     data = {}
     
     for _, row in settlement_info.iterrows():
@@ -323,7 +321,7 @@ def settlement_malaria(hospital, settlement):
     hospital = hospital.capitalize()
     settlement = settlement.capitalize()
     settlement_info = df[(df['health_facility'].str.capitalize() == hospital) &
-                               (df['settlement'].str.capitalize() == settlement)].loc[:,'RDT FOR MALARIA':'Vit-A']
+                               (df['settlement'].str.capitalize() == settlement)].loc[:,'rdt_for_malaria':'vit_a']
     data = {}
     
     for _, row in settlement_info.iterrows():
@@ -346,7 +344,7 @@ def settlement_consumables(hospital, settlement):
     hospital = hospital.capitalize()
     settlement = settlement.capitalize()
     settlement_info = df[(df['health_facility'].str.capitalize() == hospital) &
-                               (df['settlement'].str.capitalize() == settlement)].loc[:,'COTTON WOOL 100G (1 per HF)':'TABLE NAPKIN (ROLL)']
+                               (df['settlement'].str.capitalize() == settlement)].loc[:,'cotton_wool':'table_napkin']
     data = {}
 
     for _, row in settlement_info.iterrows():
@@ -369,7 +367,7 @@ def settlement_hftools(hospital, settlement):
     hospital = hospital.capitalize()
     settlement = settlement.capitalize()
     settlement_info = df[(df['health_facility'].str.capitalize() == hospital) &
-                               (df['settlement'].str.capitalize() == settlement)].loc[:,'OPD REGISTER (1 per HF)':'Envelopes']
+                               (df['settlement'].str.capitalize() == settlement)].loc[:,'opd_register':'envelopes']
     data = {}
 
     for _, row in settlement_info.iterrows():
