@@ -401,7 +401,7 @@ def settlement_pop_compute(hospital, settlement, total_pop):
     older_adolescents = format_count(total_pop * 0.11)
     
     data = {
-        "Under 1": under_1,
+        "under 1": under_1,
         "Under 5": under_5,
         "(6 to 59 months)": six_to_59_months,
         "Pregnant Women": pregnant_women,
