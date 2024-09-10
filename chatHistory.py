@@ -24,9 +24,8 @@ db = client['GeoST4R-Chathistory']
 def add_interaction():
     data = request.json
     db.interactions.insert_one({
-        'counter': data.get('counter'),
-        'botMessage': data.get('botMessage'),
-        'userMessage': data.get('userMessage'),
+        'conversationId': data.get('counter'),
+        'message': data.get('botMessage'),
         'timestamp': data.get('timestamp')
     })
     return jsonify({'message': 'Interaction added successfully'}), 201
