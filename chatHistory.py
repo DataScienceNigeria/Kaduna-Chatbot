@@ -9,9 +9,13 @@ chatHistory_bp = Blueprint("chatHistory", __name__, template_folder="templates")
 load_dotenv()
 
 # Connect to MongoDB
-mongo_string = os.getenv("MONGO_STRING")
-if not mongo_string:
-    raise ValueError("MONGO_STRING environment variable is not set")
+MONGO_NAME = os.getenv("MONGO_NAME")
+MONGO_DB = os.getenv("MONGO_DB")
+MONGO_PASSWORD = os.getenv("MONGO_PASSWORD")
+MONGO_CLUSTER = os.getenv("MONGO_CLUSTER")
+MONGO_STRING = os.getenv("MONGO_STRING")
+
+mongo_string = f"mongodb+srv://{MONGO_NAME}:{MONGO_PASSWORD}@{MONGO_CLUSTER}/?retryWrites=true&w=majority&appName={MONGO_DB}"
 
 client = MongoClient(mongo_string)
 db = client['GeoST4R-Chathistory']
