@@ -2,9 +2,11 @@ from flask import Blueprint, render_template, redirect, request, jsonify
 from dotenv import load_dotenv
 import os
 import json
+from flask_cors import CORS
 from pymongo import MongoClient
 
 chatHistory_bp = Blueprint("chatHistory", __name__, template_folder="templates")
+CORS(chatHistory_bp)
 
 load_dotenv()
 
@@ -26,14 +28,12 @@ def add_interaction():
     collection.interactions.insert_one(data)
     return jsonify({'message': 'Interaction added successfully'}), 201
 
-
 @chatHistory_bp.route('/get_history', methods=['GET'])
 def get_interactions():
     interactions = list(db.interactions.find())
     for interaction in interactions:
         interaction['_id'] = str(interaction['_id'])  # Convert ObjectId to string for JSON
     return jsonify(interactions)
-
 
 if __name__ == '__main__':
     chatHistory_bp.run(debug=True, host="0.0.0.0", port=8000)
