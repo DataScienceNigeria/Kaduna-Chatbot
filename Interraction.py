@@ -2,9 +2,11 @@ from flask import Blueprint, request, jsonify
 from dotenv import load_dotenv
 import os
 import json
+from flask_cors import CORS
 from pymongo import MongoClient
 
 history_bp = Blueprint("history", __name__, template_folder="templates")
+CORS(history_bp)
 
 load_dotenv()
 
