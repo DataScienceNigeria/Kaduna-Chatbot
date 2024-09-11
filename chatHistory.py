@@ -13,21 +13,17 @@ MONGO_NAME = os.getenv("MONGO_NAME")
 MONGO_DB = os.getenv("MONGO_DB")
 MONGO_PASSWORD = os.getenv("MONGO_PASSWORD")
 MONGO_CLUSTER = os.getenv("MONGO_CLUSTER")
-MONGO_STRING = os.getenv("MONGO_STRING")
 
 mongo_string = f"mongodb+srv://{MONGO_NAME}:{MONGO_PASSWORD}@{MONGO_CLUSTER}/?retryWrites=true&w=majority&appName={MONGO_DB}"
 
 client = MongoClient(mongo_string)
 db = client['GeoST4R-Chathistory']
+collection = db['interactions']
 
-@chatHistory_bp.route('/history')
+@chatHistory_bp.route('/history', methods=['POST'])
 def add_interaction():
     data = request.json
-    db.interactions.insert_one({
-        'conversationId': data.get('counter'),
-        'message': data.get('botMessage'),
-        'timestamp': data.get('timestamp')
-    })
+    collection.interactions.insert_one(data)
     return jsonify({'message': 'Interaction added successfully'}), 201
 
 
