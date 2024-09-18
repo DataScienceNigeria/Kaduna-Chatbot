@@ -611,4 +611,4 @@ def compute_settlement_hftools(total_pop, hospital, settlement):
 
 
 if __name__ == '__main__':
-        microplan_bp_.run(debug=True, host="0.0.0.0", port=8000)
+   microplan_bp_.run(debug=True, host="0.0.0.0", port=8000)

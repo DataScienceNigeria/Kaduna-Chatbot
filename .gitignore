@@ -6,3 +6,4 @@ venv/
 blueprints/askchat/__pycache__/
 blueprints/microplan/__pycache__/
 blueprints/weather/__pycache__/
+blueprints/interaction/__pycache__/

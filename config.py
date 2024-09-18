@@ -8,4 +8,5 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     CACHE_TYPE = 'simple'
-    MONGO_STRING = os.getenv("MONGO_STRING")
+    MONGO_URI = os.getenv("MONGO_STRING")
+    MONGO_DB = os.getenv("MONGO_DB")

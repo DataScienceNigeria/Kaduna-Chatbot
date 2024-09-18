@@ -4,6 +4,7 @@ import pandas as pd
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_caching import Cache
+from pymongo import MongoClient
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -20,14 +21,19 @@ def create_app():
     migrate.init_app(app, db)
     cache.init_app(app)
 
+    with app.app_context():
+        mongo_client = MongoClient(app.config["MONGO_URI"])
+        mongo_db = mongo_client[app.config["MONGO_DB"]]
+        app.config['mongo_collection'] = mongo_db['GeoST4R_Chathistory']
+
     from microplan import microplan_bp_, initialize_db
     #from askchat import askchat_bp, initialize_db as initialize_askchat_db
     from weather import weather_bp
     from Interraction import history_bp
-    from chatHistory import chatHistory_bp
+    #from chatHistory import chatHistory_bp
 
     app.register_blueprint(microplan_bp_, url_prefix='/microplan')
-    app.register_blueprint(chatHistory_bp, url_prefix='/chatHistory')
+    #app.register_blueprint(chatHistory_bp, url_prefix='/chatHistory')
     app.register_blueprint(history_bp, url_prefix='/history')
     #app.register_blueprint(askchat_bp, url_prefix='/askchat')
     app.register_blueprint(weather_bp, url_prefix='/weather')
