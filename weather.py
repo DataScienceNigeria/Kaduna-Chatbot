@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, redirect, request, jsonify
+from flask_cors import CORS
 import os
 import json
 import urllib.request
 from datetime import datetime
 
 weather_bp = Blueprint("weather", __name__, template_folder="templates")
+CORS(weather_bp)
 
 API = os.getenv('ACCU_KEY')
 CountryCode = "NG"

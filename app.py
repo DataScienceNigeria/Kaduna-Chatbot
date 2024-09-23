@@ -30,10 +30,10 @@ def create_app():
     #from askchat import askchat_bp, initialize_db as initialize_askchat_db
     from weather import weather_bp
     from Interraction import history_bp
-    #from chatHistory import chatHistory_bp
+    from homebirthmodel import homebirth_bp
 
     app.register_blueprint(microplan_bp_, url_prefix='/microplan')
-    #app.register_blueprint(chatHistory_bp, url_prefix='/chatHistory')
+    app.register_blueprint(homebirth_bp, url_prefix='/predict')
     app.register_blueprint(history_bp, url_prefix='/history')
     #app.register_blueprint(askchat_bp, url_prefix='/askchat')
     app.register_blueprint(weather_bp, url_prefix='/weather')
