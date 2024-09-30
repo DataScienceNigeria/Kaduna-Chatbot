@@ -104,7 +104,7 @@ h1 {
   display: flex;
 }
 .react-chatbot-kit-chat-input-container {
-  /* display: none !important; */
+  display: none !important;
 }
 .react-chatbot-kit-chat-input-form {
   display: flex;

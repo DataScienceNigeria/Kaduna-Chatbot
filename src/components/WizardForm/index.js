@@ -72,10 +72,8 @@ export default function HomeBirthPrediction(props) {
     }
 
     props.actionProvider.showButtons([
-      "Microplan",
-      "Ask me about Microplan",
-      "Ask me About DHS",
-      "Home birth",
+      "Select an option:",
+      ["Microplan", "Ask me about Microplan", "Ask me About DHS", "Home birth"],
     ]);
   };
 

@@ -718,8 +718,8 @@ class ActionProvider {
   // };
 
   addNameToState = (name) => {
-    // const message = this.createClientMessage(name);
-    // this.addMessageToState(message);
+    const message = this.createClientMessage(name);
+    this.addMessageToState(message);
     this.setState((prevState) => ({ ...prevState, name }));
   };
 
@@ -821,7 +821,7 @@ class ActionProvider {
 
   loginForm = async () => {
     const message = this.createChatBotMessage(
-      "Hello hi, welcome to GeoST4R chatbot.\n Get all the information you need while you deliver health services in this region.\n\n\n Please provide your credentials to continue.\n\nu",
+      `Hello hi ${this.stateRef.name}, welcome to GeoST4R chatbot.\n Get all the information you need while you deliver health services in this region.\n\n\n Please provide your credentials to continue.\n\n`,
       { widget: "signInForm" }
     );
     this.addMessageToState(message);
@@ -887,15 +887,16 @@ class ActionProvider {
       messages: prevState.messages.slice(0, -1), // Removes the last item
     }));
   };
-  showButtons = (options) => {
+  showButtons = (params) => {
     this.setState((prevState) => ({
       ...prevState,
-      buttons: options,
+      buttons: params[1],
     }));
-    const message = this.createChatBotMessage("Select an option:", {
+    const message = this.createChatBotMessage(params[0], {
       widget: "buttons",
     });
     this.addMessageToState(message);
+    this.addPreviousCommandToState(this.showButtons, params);
   };
   handleModelling = () => {
     const message = this.createChatBotMessage("Home Birth Prediction", {

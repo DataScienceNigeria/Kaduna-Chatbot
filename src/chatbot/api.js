@@ -5,7 +5,7 @@ const fetchData = async (endpoint, params = [], subpath = "") => {
     params.length > 0 ? "/" + params.map(encodeURIComponent).join("/") : ""
   }${subpath ? "/" + subpath : ""}`;
 
-  console.log(url);
+  console.log(" request url = ", url);
 
   try {
     const response = await fetch(url);

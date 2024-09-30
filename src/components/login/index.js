@@ -10,11 +10,15 @@ export default function SignIn(props) {
   const handleLogin = () => {
     setShow(false);
     props.actionProvider.showButtons([
-      "Microplan",
-      "Ask me about Microplan",
-      "Ask me About DHS",
-      "Home birth",
+      "Please select your state",
+      ["Gombe", "Kaduna", "Kano", "Lagos"],
     ]);
+    // props.actionProvider.showButtons([
+    //   "Microplan",
+    //   "Ask me about Microplan",
+    //   "Ask me About DHS",
+    //   "Home birth",
+    // ]);
   };
 
   return (

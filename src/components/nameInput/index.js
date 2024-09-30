@@ -6,7 +6,7 @@ import SendIcon from "@mui/icons-material/Send";
 export default function CustomizedInputBase(props) {
   const [conversationId, setConversationId] = useState("");
   const [inputValue, setInputValue] = useState("");
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
 
   // Handle input changes
   const handleInputChange = (event) => {

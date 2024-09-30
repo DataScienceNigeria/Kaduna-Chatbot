@@ -83,7 +83,7 @@ export default function AMAForm(props) {
               }}
               onClick={() => {
                 setShow(false);
-                props.actionProvider.showButtons();
+                // props.actionProvider.showButtons();
               }}
             >
               Menu
