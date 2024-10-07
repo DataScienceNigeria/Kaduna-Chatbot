@@ -63,6 +63,15 @@ export default function CustomizedInputBase(props) {
       localStorage.setItem("conversationId", newConversationId);
     }
   }, []);
+  useEffect(() => {
+    const chatInputContainer = document.querySelector(
+      ".react-chatbot-kit-chat-input-container"
+    );
+
+    if (chatInputContainer) {
+      chatInputContainer.style.display =  "none";
+    }
+  }, []);
 
   // Periodically push messages to the server every 1 minute
   useEffect(() => {

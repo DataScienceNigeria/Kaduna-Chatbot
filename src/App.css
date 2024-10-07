@@ -104,7 +104,7 @@ h1 {
   display: flex;
 }
 .react-chatbot-kit-chat-input-container {
-  display: none !important;
+  /* display: none ; */
 }
 .react-chatbot-kit-chat-input-form {
   display: flex;
@@ -168,4 +168,11 @@ h1 {
 }
 .textarea:focus {
   border: none;
+}
+
+
+@media screen and (max-width: 700px) {
+  .button {
+    width: 100%;
+  }
 }

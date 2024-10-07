@@ -130,11 +130,14 @@ const Buttons = (props) => {
           props.actionProvider.stateRef.selectedSettlement
         );
         break;
+      case "ask me anything":
+
+        props.actionProvider.handleTyping(true);
+        break;
 
       default:
         stepFunctions[step]();
         setShow(false);
-        // props.actionProvider.handleTyping(true);
         console.log("in default");
 
         break;
@@ -180,6 +183,7 @@ const Buttons = (props) => {
                     flexBasis: "22%",
                     marginRight: "10px",
                   }}
+                  className="button"
                   onClick={() => handleSend(name)}
                   ref={isLastButton ? lastButtonRef : null}
                 >
