@@ -1,0 +1,165 @@
+# Retriever tool
+few_shots_examples = {
+    "How many children under 5 lives in chikun lga": """ SELECT lga, SUM(under_five) AS total_under_five_population
+                FROM your_table_name
+                WHERE lga = 'Chikun'
+                GROUP BY lga;
+                """,
+    "How many people with disabilities are in Igabi LGA?": """SELECT 
+                    lga,
+                    (COALESCE(SUM(persons_with_disabilities), 0) 
+                    + COALESCE(SUM(physically_challengephysically_challengedd), 0) 
+                    + COALESCE(SUM(visually_impaired), 0) 
+                    + COALESCE(SUM(hearing_impaired), 0) 
+                    + COALESCE(SUM(albinism), 0) 
+                    + COALESCE(SUM(intellectually_disability), 0) 
+                    + COALESCE(SUM(mental_illness), 0)) AS total_disabilities
+                FROM 
+                    health_data
+                WHERE 
+                    lga = 'Igabi'
+                GROUP BY 
+                    lga;
+                    """,
+}
+
+retriever_tool_description = (
+    "The 'sql_get_few_shot' tool is designed for efficient and accurate retrieval of "
+    "SQL query examples closely related to a given user query. It identifies the most "
+    "relevant pre-defined SQL query from a curated set."
+)
+
+# Other tools
+
+COLUMNS_DESCRIPTIONS = {
+    "hefa_id": "Unique identifier for the Health Facility Assessment (HEFA)",
+    "nutrition_gmp_register": "Register for Growth Monitoring and Promotion related to nutrition",
+    "OPD_Register": "Register for Outpatient Department visits",
+    "general_attendance_register": "Register tracking general attendance at the health facility",
+    "oxytocin": "Oxytocin availability for maternal healthcare",
+    "misoprostol": "Availability of Misoprostol for maternal health",
+    "nhmis_tools": "Tools related to the National Health Management Information System",
+    "dispersible_amoxycilin": "Dispersible amoxicillin availability for pediatric use",
+    "ors": "Oral Rehydration Solution availability for treating dehydration",
+    "zinc_tablets": "Availability of zinc tablets for child health",
+    "injectable_antibiotics": "Availability of injectable antibiotics",
+    "chlohexidine": "Availability of Chlorhexidine for infection prevention",
+    "resuscitation": "Resuscitation tools and supplies",
+    "anc_corticosteriods": "Availability of corticosteroids for antenatal care",
+    "implants": "Availability of contraceptive implants",
+    "female_condoms": "Availability of female condoms",
+    "emergency_contraception": "Availability of emergency contraception",
+    "s_no": "Serial number",
+    "total_population": "Total population size for the health area",
+    "under_one": "Population of children under one year old",
+    "under_five": "Population of children under five years old",
+    "six_fifty_nine": "Population aged six to fifty-nine months",
+    "number_of_pregnant_women": "Estimated number of pregnant women",
+    "number_of_wra": "Number of Women of Reproductive Age (WRA)",
+    "young_adolescents": "Population of young adolescents",
+    "older_adolescents": "Population of older adolescents",
+    "persons_with_disabilities": "Population of persons with disabilities",
+    "physically_challenged": "Population of physically challenged individuals",
+    "visually_impaired": "Population of visually impaired individuals",
+    "hearing_impaired": "Population of hearing-impaired individuals",
+    "albinism": "Population of individuals with albinism",
+    "intellectual_disability": "Population of individuals with intellectual disabilities",
+    "mental_illness": "Population of individuals with mental illness",
+    "phone_number": "Primary contact phone number",
+    "permanent_technical_staff": "Count of permanent technical staff",
+    "adhoc_technical_staff": "Count of ad-hoc technical staff",
+    "volunteer_technical_staff": "Count of volunteer technical staff",
+    "permanent_non_technical_staff": "Count of permanent non-technical staff",
+    "phone_number_two": "Secondary contact phone number",
+    "phone_number_o": "Alternative contact phone number",
+    "phone_number_1": "Tertiary contact phone number",
+    "bcg": "Availability of BCG vaccine for tuberculosis",
+    "bopv": "Availability of bivalent oral polio vaccine",
+    "hepbo": "Availability of hepatitis B vaccine",
+    "ipv": "Availability of inactivated polio vaccine",
+    "penta": "Availability of pentavalent vaccine",
+    "pcv": "Availability of pneumococcal conjugate vaccine",
+    "measles": "Availability of measles vaccine",
+    "td": "Availability of Tetanus-Diphtheria vaccine",
+    "mena": "Availability of meningitis vaccine",
+    "yellow_fever": "Availability of yellow fever vaccine",
+    "covid_19": "Availability of COVID-19 vaccine",
+    "ad_0_05ml": "Availability of 0.05ml auto-disable syringes",
+    "ad_0_5ml": "Availability of 0.5ml auto-disable syringes",
+    "recon_2ml": "Availability of 2ml reconstitution syringes",
+    "recon_5ml": "Availability of 5ml reconstitution syringes",
+    "bcg_diluent": "Availability of BCG diluent",
+    "measles_diluent": "Availability of measles diluent",
+    "yellow_fever_diluent": "Availability of yellow fever diluent",
+    "droppers": "Availability of droppers",
+    "safety_boxes": "Availability of safety boxes for syringe disposal",
+    "mini_pills": "Availability of mini contraceptive pills",
+    "combine_pills": "Availability of combined contraceptive pills",
+    "male_condom": "Availability of male condoms",
+    "female_condom": "Availability of female condoms",
+    "iucd": "Availability of intrauterine contraceptive device",
+    "impalanon_implant": "Availability of Implanon contraceptive implant",
+    "jadel_implant": "Availability of Jadelle contraceptive implant",
+    "depo_provera_inj": "Availability of Depo-Provera contraceptive injection",
+    "nortisterat_inj": "Availability of Norethisterone contraceptive injection",
+    "rdt_for_malaria": "Availability of Rapid Diagnostic Tests for malaria",
+    "act": "Availability of Artemisinin-based Combination Therapy (ACT) for malaria",
+    "paracetamol_syrup": "Availability of paracetamol syrup",
+    "zinc_ors": "Availability of zinc and ORS (oral rehydration solution)",
+    "disposible_amoxycillin_dt": "Availability of disposable amoxicillin dispersible tablets",
+    "fesolate_tabs": "Availability of Fesolate tablets for iron supplementation",
+    "folic_acid": "Availability of folic acid tablets",
+    "determine": "Availability of Determine rapid HIV test kits",
+    "vit_a": "Availability of vitamin A supplements",
+    "cotton_wool": "Availability of cotton wool",
+    "plaster_elastoplast": "Availability of Elastoplast plaster",
+    "plaster_big": "Availability of large-sized plasters",
+    "xylocain_injection": "Availability of Xylocaine injection for anesthesia",
+    "methylated_spirit": "Availability of methylated spirit for sterilization",
+    "pt_test_kit": "Availability of pregnancy test kits",
+    "urine_bottle": "Availability of urine sample bottles",
+    "jik": "Availability of JIK disinfectant",
+    "disposable_gloves": "Availability of disposable gloves",
+    "sterile_gloves": "Availability of sterile gloves",
+    "liquid_soap": "Availability of liquid soap for handwashing",
+    "under_lid": "Availability of under-lid (unknown context)",
+    "tincture_of_iodine": "Availability of iodine tincture",
+    "table_napkin": "Availability of table napkins",
+    "opd_register": "Register for Outpatient Department services",
+    "fp_register": "Register for Family Planning services",
+    "immunization_register": "Register for immunization services",
+    "anc_register": "Register for antenatal care services",
+    "pmctct": "Register for Prevention of Mother-to-Child Transmission (PMTCT) services",
+    "gmp_register": "Register for Growth Monitoring and Promotion",
+    "out_mobile": "Register for mobile outreach services",
+    "nhmis_monthly_summary": "Monthly summary for National Health Management Information System",
+    "imm_card": "Immunization cards",
+    "family_planning_card": "Family planning service cards",
+    "anc_card": "Antenatal care service cards",
+    "hiv_client_intake_form": "Intake form for HIV clients",
+    "hiv_request_result_form": "HIV request and result form",
+    "referral_forms": "Referral forms for patients",
+    "leaflets": "Educational leaflets",
+    "envelopes": "Envelopes for health facility use",
+    "msf": "Supplies provided by Médecins Sans Frontières (MSF)",
+    "ANC_Register": "Register for Antenatal Care (ANC)",
+    "labour_delivery_register": "Register for labor and delivery services",
+    "postnatal_care_register": "Register for postnatal care services",
+    "family_planning_register": "Register for family planning services",
+    "in_patient_register": "Register for inpatient services",
+    "birth_register": "Register for births at the facility",
+    "ri_child_register": "Register for routine immunization of children",
+    "child_immunization_tally_register": "Tally register for child immunizations",
+    "vaccine_utilization_register": "Register for tracking vaccine usage",
+    "ward": "Ward within the health facility",
+    "health_facility": "Name of the health facility",
+    "ownership_type": "Ownership type of the facility (e.g., public, private)",
+    "facility_type": "Type of health facility",
+    "name_of_ward_ce_focal_person": "Name of the ward Community Engagement focal person",
+    "settlement": "Settlement area for the health facility",
+    "lga": "Local Government Area (LGA) where the facility is located",
+    "name_of_primary_school_quranic_school": "Name of a nearby primary or Quranic school",
+    "name_of_mai_unguwa": "Name of the village head",
+    "church_mosque": "Proximity to a church or mosque",
+    "distance_to_health_facility": "Distance from lga to health facility",
+}
