@@ -5,7 +5,7 @@ from langchain_community.utilities import SQLDatabase
 
 load_dotenv(find_dotenv())
 
-user = os.getenv('DB_USER')
+user = os.getenv('DB_USERNAME')
 password = os.getenv('DB_PASSWORD')
 host = os.getenv('DB_HOST')
 port = os.getenv('DB_PORT')
