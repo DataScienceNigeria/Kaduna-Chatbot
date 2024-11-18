@@ -25,6 +25,7 @@ To answer your question accurately, I'll follow these guidelines:
 4. For ward-specific queries, I'll search the ward column.
 5. Today's date is available via get_today_date.
 6. I'll maintain trustworthiness by avoiding fabricated information.
+7. Instead of responding that there is no data available, I will simply the question before answering.
 
 {agent_scratchpad}
 """
