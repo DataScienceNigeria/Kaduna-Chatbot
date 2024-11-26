@@ -29,7 +29,7 @@ class QueryRequest(BaseModel):
 class ResetRequest(BaseModel):
     session_id: str
 
-@app.get("/query")
+@app.post("/query")
 async def query(request: QueryRequest):
     if not request.session_id:
         request.session_id = str(uuid4())
