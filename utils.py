@@ -1,9 +1,12 @@
+import os
 from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
 # from langchain_groq import ChatGroq
 from constants import chat_groq_model_kwargs, langchain_chat_kwargs
 
 # Optional, set the API key for OpenAI if it's not set in the environment.
 # os.environ["OPENAI_API_KEY"] = "xxxxxx"
+load_dotenv()
 
 def get_chat_openai(model_name):
     """
