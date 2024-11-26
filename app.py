@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request, Body
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import json
 from sql_agent.agent import create_agent
@@ -7,6 +8,13 @@ from uuid import uuid4
 from pydantic import BaseModel
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 # Create the agent
 agent = create_agent()
