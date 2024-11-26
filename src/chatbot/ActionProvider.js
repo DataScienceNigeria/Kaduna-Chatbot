@@ -261,6 +261,7 @@ class ActionProvider {
     const message = this.createClientMessage(name);
     this.addMessageToState(message);
   };
+  
   enterChatText = (name) => {
     const message = this.createChatBotMessage(name);
     this.addMessageToState(message);
@@ -524,6 +525,7 @@ class ActionProvider {
       settlement_name
     );
   };
+
   fetchImmunizationForSettlement = async (settlement_name) => {
     try {
       this.loader();
@@ -569,6 +571,7 @@ class ActionProvider {
       settlement_name
     );
   };
+
   fetchMalariaForSettlement = async (settlement_name) => {
     try {
       this.loader();
@@ -614,6 +617,7 @@ class ActionProvider {
       settlement_name
     );
   };
+
   fetchConsumablesForSettlement = async (settlement_name) => {
     try {
       this.loader();
@@ -659,6 +663,7 @@ class ActionProvider {
       settlement_name
     );
   };
+
   fetchFacilityToolsForSettlement = async (settlement_name) => {
     try {
       this.loader();
@@ -704,6 +709,7 @@ class ActionProvider {
       settlement_name
     );
   };
+
   addMessageToState = (message) => {
     this.setState((prevState) => ({
       ...prevState,
@@ -826,6 +832,7 @@ class ActionProvider {
     );
     this.addMessageToState(message);
   };
+
   AMAForm = async (question) => {
     // this.setState((prevState) => ({
     //   ...prevState,
@@ -836,6 +843,7 @@ class ActionProvider {
     });
     this.addMessageToState(message);
   };
+
   handleTyping = async (type) => {
     console.log("type change to = ", type);
 
@@ -860,16 +868,29 @@ class ActionProvider {
     // this.addMessageToState(message);
     try {
       this.loader();
-      const data = await answerQuestion(question);
+
+      // Retrieve the sessionId (or conversationId) from the state or localStorage
+      const sessionId = localStorage.getItem("conversationId") || this.state.conversationId;
+
+      // If sessionId is undefined, handle the case appropriately
+      if (!sessionId) {
+        console.error("Session ID (conversationId) is missing");
+        this.RemoveLoader();
+        return;
+      }
+      const data = await answerQuestion(question, sessionId);
       this.RemoveLoader();
       console.log("question data = ", data);
+
       if (data.error) {
-        // this.AMAForm(`Error fetching Answer to the question : ${data.error}`);
-        const message = this.createChatBotMessage(
-          `Error fetching Answer to the question : ${data.error}`
-        );
-        this.addMessageToState(message);
-      }
+      // Handle API error
+      const errorMessage = `Error fetching answer to the question: ${data.error}`;
+      this.enterChatText(errorMessage); // Display error on the frontend
+    } else {
+      // Handle successful response
+      const responseMessage = data.response; // Extract response from API
+      this.enterChatText(responseMessage); // Display response on the frontend
+    }
 
       // this.AMAForm(data.response);
       const message = this.createChatBotMessage(data.response);
@@ -887,6 +908,8 @@ class ActionProvider {
       messages: prevState.messages.slice(0, -1), // Removes the last item
     }));
   };
+
+
   showButtons = (params) => {
     this.setState((prevState) => ({
       ...prevState,

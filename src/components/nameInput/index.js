@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { answerQuestion } from "../../chatbot/api";
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
 
 export default function CustomizedInputBase(props) {
   const [conversationId, setConversationId] = useState("");
+  const [question, setQuestion] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [show, setShow] = useState(true);
 
@@ -14,11 +16,15 @@ export default function CustomizedInputBase(props) {
   };
 
   // Handle sending messages
-  const handleSend = () => {
+  const handleSend = async () => {
     if (inputValue.trim()) {
-      console.log("Sending message:", inputValue);
+      console.log("Sending message:", conversationId);
       props.actionProvider.addNameToState(inputValue);
       props.actionProvider.loginForm();
+
+      const response = await answerQuestion(inputValue, conversationId);
+      console.log("API response:", response);
+      
       setInputValue("");
       setShow(false);
     }
@@ -56,13 +62,16 @@ export default function CustomizedInputBase(props) {
   useEffect(() => {
     const savedConversationId = localStorage.getItem("conversationId");
     if (savedConversationId) {
+      console.log("conversationId loaded from localStorage:", savedConversationId);
       setConversationId(savedConversationId);
     } else {
-      const newConversationId = Math.round(Date.now() * Math.random());
+      const newConversationId = Math.round(Date.now() * Math.random()).toString();
+      console.log("New conversationId generated:", newConversationId);
       setConversationId(newConversationId);
       localStorage.setItem("conversationId", newConversationId);
     }
   }, []);
+
   useEffect(() => {
     const chatInputContainer = document.querySelector(
       ".react-chatbot-kit-chat-input-container"
@@ -80,7 +89,7 @@ export default function CustomizedInputBase(props) {
       if (messages.length > 0) {
         pushMessagesToServer(messages);
       }
-    }, 60000); // Every 1 minute
+    }, 600000); // Every 1 minute
 
     // Clean up the interval on unmount
     return () => clearInterval(interval);

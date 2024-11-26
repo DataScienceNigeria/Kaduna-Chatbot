@@ -69,13 +69,23 @@ export const fetchHfTools = (hc_name, settlement_name) =>
     `settlement/${settlement_name}/hftools`
   );
 
-export const answerQuestion = async (question) => {
+export const answerQuestion = async (question, sessionId) => {
+  const payload = {
+    query: question, // The user's question
+    session_id: sessionId, // The session ID
+  };
+
+  console.log("Payload being sent to API:", payload);  // Log the payload
+
   try {
     const response = await fetch(
-      `https://rmnchn-rag-43d8c7e61bc1.herokuapp.com/chatbot?user_input=${encodeURIComponent(
-        question
-      )}`
-    );
+      `https://rag-chat-92b6e8b90356.herokuapp.com/query`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
 
     const data = await response.json();
 
@@ -84,4 +94,5 @@ export const answerQuestion = async (question) => {
     console.error("Error sending question: ", error);
     return { error: error.message };
   }
+
 };
