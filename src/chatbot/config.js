@@ -5,6 +5,7 @@ import BotAvatar from "../components/botAvatar";
 import CustomizedInputBase from "../components/nameInput";
 import Buttons from "../components/buttons";
 import Textbox from "../components/textbox";
+import ImgWidget from "../image/index.jsx";
 import AMAForm from "../components/AMAForm";
 import SignIn from "../components/login";
 import PredictionForm from "../components/WizardForm/index.js";
@@ -51,6 +52,10 @@ const config = {
       widgetName: "textbox",
       widgetFunc: (props) => <Textbox {...props} />,
       mapStateToProps: ["messages"],
+    },
+    {
+      widgetName: "image",
+      widgetFunc: (props) => <ImgWidget {...props.payload} />,
     },
   ],
   customComponents: {

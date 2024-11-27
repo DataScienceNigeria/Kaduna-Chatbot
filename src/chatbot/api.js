@@ -59,6 +59,33 @@ export const fetchHfTools = (hc_name, settlement_name) =>
     "lga/ward/hospital", [hc_name], `settlement/${settlement_name}/hftools`
   );
 
+  export const fectchCatchmentMap = async () => {
+
+    try {
+      const response = await fetch(
+        `https://raw.githubusercontent.com/DataScienceNigeria/Kaduna-Chatbot/refs/heads/ui-layout/catchmentMap.jpg`
+      );
+      return response.url;
+    } catch (error) {
+      console.error("Error sending question: ", error);
+      return { error: error.message };
+    }
+  };
+
+  export const fectchWeatherInfo = async () => {
+
+    try {
+      const response = await fetch(
+        `https://api-utility-02885d450e64.herokuapp.com/weather/10.17,7.3`
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error sending question: ", error);
+      return { error: error.message };
+    }
+  };
+
 export const answerQuestion = async (question, sessionId) => {
   const payload = {
     query: question, // The user's question

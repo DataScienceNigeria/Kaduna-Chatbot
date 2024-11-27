@@ -14,7 +14,9 @@ import {
   fetchMalaria,
   fetchImmunization,
   fetchConsumables,
+  fectchCatchmentMap,
   answerQuestion,
+  fectchWeatherInfo,
 } from "./api";
 import React from "react";
 
@@ -802,6 +804,102 @@ class ActionProvider {
     this.addPreviousCommandToState(
       this.fetchFacilityToolsForSettlement,
       settlement_name
+    );
+  };
+
+  fetchCatchmentForHc = async () => {
+    try {
+      this.loader();
+      // const hcName = this.stateRef.selectedHc;
+      const catchmentMapUrl = await fectchCatchmentMap();
+      console.log(catchmentMapUrl)
+
+      this.RemoveLoader();
+
+      if (catchmentMapUrl.error) {
+        const errorMessage = this.createChatBotMessage(
+          `Error fetching catchment area map: ${catchmentMapUrl.error}`
+        );
+        this.addMessageToState(errorMessage);
+      } else {
+        const message = this.createChatBotMessage(
+          "",
+          { widget: "image",
+            payload: { // Pass additional props if needed
+              type: "catchment area map",
+              src: catchmentMapUrl,
+              alt: "Catchment Map",
+            },
+          }
+        );
+        this.addMessageToState(message);
+
+        this.setState((prevState) => ({
+          ...prevState,
+          buttons: ["Yes, go back", "No, end this chat"],
+        }));
+
+        const message1 = this.createChatBotMessage(
+          "Do you want to go back to previous menu?",
+          { widget: "buttons" }
+        );
+        this.addMessageToState(message1);
+      }
+    } catch (error) {
+      console.error("Error fetching settlement Facility Tools:", error);
+      this.RemoveLoader();
+      const errorMessage = this.createChatBotMessage(
+        "Sorry, there was an error fetching the settlement Facility Tools Details. Please try again later."
+      );
+      this.addMessageToState(errorMessage);
+    }
+    this.addPreviousCommandToState(
+      this.fetchCatchmentForHc
+    );
+  };
+
+  fetchWeatherInfoForHc = async () => {
+    try {
+      this.loader();
+      // const hcName = this.stateRef.selectedHc;
+      const data = await fectchWeatherInfo();
+      console.log(data)
+
+      this.RemoveLoader();
+
+      if (data.error) {
+        const errorMessage = this.createChatBotMessage(
+          `Error fetching catchment area map: ${data.error}`
+        );
+        this.addMessageToState(errorMessage);
+      } else {
+        const message = this.createChatBotMessage(
+          <Textbox {...data} type={"weather"} />,
+          { widget: "unknown" }
+        );
+        this.addMessageToState(message);
+
+        this.setState((prevState) => ({
+          ...prevState,
+          buttons: ["Yes, go back", "No, end this chat"],
+        }));
+
+        const message1 = this.createChatBotMessage(
+          "Do you want to go back to previous menu?",
+          { widget: "buttons" }
+        );
+        this.addMessageToState(message1);
+      }
+    } catch (error) {
+      console.error("Error fetching settlement Facility Tools:", error);
+      this.RemoveLoader();
+      const errorMessage = this.createChatBotMessage(
+        "Sorry, there was an error fetching the settlement Facility Tools Details. Please try again later."
+      );
+      this.addMessageToState(errorMessage);
+    }
+    this.addPreviousCommandToState(
+      this.fetchWeatherInfoForHc
     );
   };
 

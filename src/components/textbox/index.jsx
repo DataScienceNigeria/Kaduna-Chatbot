@@ -157,7 +157,7 @@ const Textbox = (prop) => {
         <p>Table Napkin (Roll): {prop.table_napkin}</p>
       </>
     );
-  } else if (prop.type === "hftools") {
+  } else if (prop.type === "commodities") {
     content = (
       <>
         <p>Cotton Wool 100G(1 per HF): {prop.cotton_wool}</p>
@@ -174,6 +174,40 @@ const Textbox = (prop) => {
         <p>Under-Lid: {prop.under_lid}</p>
         <p>Tincture of Iodine (20 ML) prt HF: {prop.tincture_of_iodine}</p>
         <p>Table Napkin (Roll): {prop.table_napkin}</p>
+      </>
+    );
+  } else if (prop.type === "hftools") {
+    content = (
+      <>
+        <p>OPD Register: {prop.opd_register}</p>
+        <p>FP Register: {prop.fp_register}</p>
+        <p>Immunization Register: {prop.immunization_register}</p>
+        <p>ANC Register: {prop.anc_register}</p>
+        <p>PMCTCT: {prop.pmctct}</p>
+        <p>GMP Register: {prop.gmp_register}</p>
+        <p>Out Mobile: {prop.out_mobile}</p>
+        <p>NHMIS Monthly Summary: {prop.nhmis_monthly_summary}</p>
+        <p>Imm Card: {prop.imm_card}</p>
+        <p>Family Planning Card: {prop.family_planning_card}</p>
+        <p>ANC Card: {prop.anc_card}</p>
+        <p>HIV Client Intake Form: {prop.hiv_client_intake_form}</p>
+        <p>HIV Request Result Form: {prop.hiv_request_result_form}</p>
+        <p>Referral Forms: {prop.referral_forms}</p>
+        <p>Leaflets: {prop.leaflets}</p>
+        <p>Envelopes: {prop.envelopes}</p>
+      </>
+    );
+  } else if (prop.type === "weather") {
+    content = (
+      <>
+        <p>Date: {prop.Date}</p>
+        <p>Average Temperature: {prop.Temperature.Average} {prop.Temperature.Unit}</p>
+        <p>Precipitation Type: {prop.PrecipitationType}</p>
+        <p>Humidity: {prop.Humidity}%</p>
+        <p>Wind Speed: {prop.Wind.Speed}</p>
+        <p>Wind Direction: {prop.Wind.Direction}</p>
+        <p>Rainfall: {prop.Rainfall}</p>
+        <p>Thunderstorm Probability: {prop.ThunderstormProbability}%</p>
       </>
     );
   } else {

@@ -88,6 +88,12 @@ const Buttons = (props) => {
         props.actionProvider.showSelectState(name);
         break;
       
+      case "catchment area map":
+        props.actionProvider.fetchCatchmentForHc(
+          props.actionProvider.stateRef.selectedHc
+        );
+        break;
+
       case "chat with me":
         props.actionProvider.showButtons([
           "Select an option:",
@@ -112,9 +118,11 @@ const Buttons = (props) => {
           props.actionProvider.stateRef.selectedHc
         );
         break;
+
       case "home birth":
         props.actionProvider.handleModelling();
         break;
+
       case "population":
         props.actionProvider.addPopulationToState(
           props.actionProvider.stateRef.selectedSettlement
@@ -127,13 +135,7 @@ const Buttons = (props) => {
         );
         break;
 
-      case "commodities":
-        props.actionProvider.addCommoditesToState(
-          props.actionProvider.stateRef.selectedSettlement
-        );
-        break;
-
-      case "family planning":
+        case "family planning":
         props.actionProvider.fetchFamilyPlanningForSettlement(
           props.actionProvider.stateRef.selectedSettlement
         );
@@ -144,8 +146,36 @@ const Buttons = (props) => {
           props.actionProvider.stateRef.selectedSettlement
         );
         break;
-      case "ask me anything":
 
+      case "malaria icm and more":
+        props.actionProvider.fetchMalariaForSettlement(
+          props.actionProvider.stateRef.selectedSettlement
+        );
+        break;
+      
+      case "commodities":
+        props.actionProvider.addCommoditesToState(
+          props.actionProvider.stateRef.selectedSettlement
+        );
+        break;
+
+      case "consumables":
+        props.actionProvider.fetchConsumablesForSettlement(
+          props.actionProvider.stateRef.selectedSettlement
+        );
+        break;
+
+      case "facility tools":
+        props.actionProvider.fetchFacilityToolsForSettlement(
+          props.actionProvider.stateRef.selectedSettlement
+        );
+        break;
+
+      case "weather information":
+        props.actionProvider.fetchWeatherInfoForHc();
+        break;
+
+      case "ask me anything":
         props.actionProvider.handleTyping(true);
         break;
 
