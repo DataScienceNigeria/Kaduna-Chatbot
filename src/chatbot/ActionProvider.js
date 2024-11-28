@@ -15,6 +15,7 @@ import {
   fetchImmunization,
   fetchConsumables,
   fectchCatchmentMap,
+  fetchComputePopulation,
   answerQuestion,
   fectchWeatherInfo,
 } from "./api";
@@ -1107,6 +1108,63 @@ class ActionProvider {
     }));
   };
 
+  handleComputePopulation = async (popValue) => {
+    const isValidNumber = !isNaN(parseFloat(popValue)) && isFinite(popValue);
+  
+    if (!isValidNumber) {
+      const errorMessage = this.createChatBotMessage(
+        "Invalid number. Please enter a valid number."
+      );
+      this.addMessageToState(errorMessage);
+      return;
+    }
+  
+    try {
+      this.loader();
+  
+      const selectedSettlement = this.stateRef.selectedSettlement;
+      const hcName = this.stateRef.hcName;
+      const data = await fetchComputePopulation(hcName, selectedSettlement, popValue);
+      console.log(data)
+      this.RemoveLoader();
+  
+      if (data.error) {
+        const errorMessage = this.createChatBotMessage(
+          `Error computing population: ${data.error}`
+        );
+        this.addMessageToState(errorMessage);
+      } else {
+        const message = this.createChatBotMessage(
+          <Textbox {...data} type={"population"} />,
+          { widget: "unknown" }
+        );
+        this.addMessageToState(message);
+  
+        this.setState((prevState) => ({
+          ...prevState,
+          buttons: ["Yes, go back", "No, end this chat"],
+        }));
+  
+        const message1 = this.createChatBotMessage(
+          "Do you want to go back to previous menu?",
+          { widget: "buttons" }
+        );
+        this.addMessageToState(message1);
+      }
+    } catch (error) {
+      console.error("Error computing population:", error);
+      this.RemoveLoader();
+      const errorMessage = this.createChatBotMessage(
+        "Sorry, there was an error computing the population. Please try again later."
+      );
+      this.addMessageToState(errorMessage);
+    }
+  
+    this.addPreviousCommandToState(
+      this.fetchComputePopulation,
+      popValue
+    );
+  };
 
   showButtons = (params) => {
     this.setState((prevState) => ({
@@ -1119,6 +1177,7 @@ class ActionProvider {
     this.addMessageToState(message);
     this.addPreviousCommandToState(this.showButtons, params);
   };
+  
   handleModelling = () => {
     const message = this.createChatBotMessage("Home Birth Prediction", {
       widget: "ModellingForm",

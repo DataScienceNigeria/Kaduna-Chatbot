@@ -65,6 +65,7 @@ const Buttons = (props) => {
       stepThreeFunction,
       stepFourFunction,
       stepFiveFunction,
+      stepSixFunction,
       // Add more steps here
     ];
 
@@ -162,6 +163,12 @@ const Buttons = (props) => {
         props.actionProvider.addCommoditesToState(
           props.actionProvider.stateRef.selectedSettlement
         );
+        break;
+      
+      case "compute population":
+        const selectedSettlement = props.actionProvider.stateRef.selectedSettlement;
+        props.actionProvider.enterChatText(`Enter the population of ${selectedSettlement}`);
+        props.actionProvider.handleTyping(true);
         break;
 
       case "consumables":
