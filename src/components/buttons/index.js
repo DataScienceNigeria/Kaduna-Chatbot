@@ -42,6 +42,11 @@ const Buttons = (props) => {
     };
     const stepFiveFunction = () => {
       console.log("Step 5 function executed");
+      props.actionProvider.addSettlementToState(name);
+      // handleNextStep();
+    };
+    const stepSixFunction = () => {
+      console.log("Step 6 function executed");
       props.actionProvider.addCommoditesToState(name);
       // handleNextStep();
     };
@@ -124,13 +129,13 @@ const Buttons = (props) => {
         break;
 
       case "population":
-        props.actionProvider.addPopulationToState(
+        props.actionProvider.fetchPopulationForSettlement(
           props.actionProvider.stateRef.selectedSettlement
         );
         break;
 
       case "profile":
-        props.actionProvider.addProfileToState(
+        props.actionProvider.fetchProfileForSettlement(
           props.actionProvider.stateRef.selectedSettlement
         );
         break;
