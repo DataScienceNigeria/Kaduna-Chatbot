@@ -401,13 +401,13 @@ def settlement_pop_compute(hospital, settlement, total_pop):
     older_adolescents = format_count(total_pop * 0.11)
     
     data = {
-        "under 1": under_1,
-        "Under 5": under_5,
-        "(6 to 59 months)": six_to_59_months,
-        "Pregnant Women": pregnant_women,
-        "Women of Reproductive Age (WRA)": wra,
-        "Young Adolescents (10 to 14 years)":  young_adolescents,
-        "Older Adolescents (15 to 19 years)": older_adolescents
+        "under_1": under_1,
+        "under_5": under_5,
+        "six_to_59_months": six_to_59_months,
+        "pregnant_women": pregnant_women,
+        "women_of_reproductive_age": wra,
+        "young_adolescents":  young_adolescents,
+        "older_adolescents": older_adolescents
     }
     
     return (data)
