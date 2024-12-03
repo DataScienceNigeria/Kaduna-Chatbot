@@ -171,7 +171,8 @@ const Buttons = (props) => {
         props.actionProvider.handleTypingC(true);
         break;
       
-      case "compute comodities":
+      case "compute commodities":
+        console.log("Current value of popValue:", props.actionProvider?.stateRef?.popValue);
         props.actionProvider.addComputeCommoditiesToState(
           props.actionProvider.stateRef.popValue
         );

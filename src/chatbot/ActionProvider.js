@@ -974,6 +974,35 @@ class ActionProvider {
     }));
     this.addPreviousCommandToState(this.addSettlementToState, settlement);
   };
+  addComputeCommoditiesToState = (population) => {
+    const checkBack = this.stateRef.goBack;
+
+    this.setState((prevState) => ({
+      ...prevState,
+      popValue: population,
+    }));
+
+    // Add the bot message and options after a settlement is selected
+    const computeOptions = [
+      "Compute Family Planning",
+      "Compute Immunization",
+      "Compute Malaria ICM and More",
+      "Compute Consumables",
+      "Compute Facility Tools",
+      "Compute Go back",
+    ];
+    const message = this.createChatBotMessage("Select an option:", {
+      widget: "buttons",
+      options: computeOptions.map((option) => ({ text: option, id: option })),
+    });
+    this.addMessageToState(message);
+    this.setState((prevState) => ({
+      ...prevState,
+      buttons: computeOptions,
+      counter: checkBack ? prevState.counter : prevState.counter + 1,
+    }));
+    this.addPreviousCommandToState(this.ComputeCommoditiesToState, population);
+  };
   addPopulationToState = (settlement) => {
     this.setState((prevState) => ({ ...prevState, population: settlement }));
     this.fetchPopulationForSettlement(settlement);

@@ -20,6 +20,7 @@ const config = {
     selectedLga: "",
     selectedHc: "",
     selectedSettlement: "",
+    popValue: "",
     buttons: [],
     previousCommand: [],
     counter: 0,
