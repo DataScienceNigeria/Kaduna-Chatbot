@@ -46,7 +46,19 @@ const Textbox = (prop) => {
         </p>
       </>
     );
-  } else if (prop.type === "human resources") {
+  } else if (prop.type === "compute population") {
+    content = (
+      <>
+        <p>Number of Under-1: {prop.under_1}</p>
+        <p>Number of Under-5: {prop.under_5}</p>
+        <p>Number of 6-59 months: {prop.six_to_59_months}</p>
+        <p>Number of Pregnant Women: {prop.pregnant_women}</p>
+        <p>Number of WRA: {prop.women_of_reproductive_age}</p>
+        <p>Young Adolescents 10-14 years: {prop.young_adolescents}</p>
+        <p>Older Adolescents 15-19 years: {prop.older_adolescents}</p>
+      </>
+    );
+  }else if (prop.type === "human resources") {
     content = (
       <>
         <p>Officer in charge: {prop.officer_in_charge}</p>

@@ -979,6 +979,11 @@ class ActionProvider {
     this.fetchPopulationForSettlement(settlement);
     this.addPreviousCommandToState(this.addPopulationToState, settlement);
   };
+  addComputePopulationToState = (popValue) => {
+    this.setState((prevState) => ({ ...prevState, population: popValue }));
+    this.fetchComputePopulation(popValue);
+    this.addPreviousCommandToState(this.addComputePopulationToState, popValue);
+  };
   addStatusToState = (hc) => {
     this.setState((prevState) => ({ ...prevState, selectedHc: hc }));
     this.fetchStatusForHc(hc);
@@ -1050,6 +1055,27 @@ class ActionProvider {
     //   ...prevState,
     //   typing: type, // Ensure correct state update
     // }));
+    console.log("Typing state changed to:", type);
+
+    // Add a lifecycle method to handle side effects when typing changes
+    const chatInputContainer = document.querySelector(
+      ".react-chatbot-kit-chat-input-container"
+    );
+
+    if (chatInputContainer) {
+      chatInputContainer.style.display = type ? "block" : "none";
+    }
+  };
+
+  handleTypingC = async (type) => {
+    console.log("type change to = ", type);
+
+    this.setState((prevState) => ({
+      ...prevState,
+      typing: type,
+      state: type ? "computePopulation" : prevState.state,
+    }));
+
     console.log("Typing state changed to:", type);
 
     // Add a lifecycle method to handle side effects when typing changes
@@ -1135,18 +1161,18 @@ class ActionProvider {
         this.addMessageToState(errorMessage);
       } else {
         const message = this.createChatBotMessage(
-          <Textbox {...data} type={"population"} />,
+          <Textbox {...data} type={"compute population"} />,
           { widget: "unknown" }
         );
         this.addMessageToState(message);
   
         this.setState((prevState) => ({
           ...prevState,
-          buttons: ["Yes, go back", "No, end this chat"],
+          buttons: ["Compute commodities", "No, end this chat"],
         }));
   
         const message1 = this.createChatBotMessage(
-          "Do you want to go back to previous menu?",
+          `Do you want to compute commodities for ${selectedSettlement} settlement?`,
           { widget: "buttons" }
         );
         this.addMessageToState(message1);
@@ -1160,10 +1186,10 @@ class ActionProvider {
       this.addMessageToState(errorMessage);
     }
   
-    this.addPreviousCommandToState(
-      this.fetchComputePopulation,
-      popValue
-    );
+    // this.addPreviousCommandToState(
+    //   this.fetchComputePopulation,
+    //   popValue
+    // );
   };
 
   showButtons = (params) => {

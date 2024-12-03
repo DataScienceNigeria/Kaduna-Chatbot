@@ -6,11 +6,10 @@ class MessageParser {
   }
 
   parse(message) {
-    // const { setTyping } = useProvider();
-
-    // console.log(message);
-    // console.log("states", this.actionProvider.stateRef);
-    if (this.actionProvider.stateRef.name) {
+    if (this.actionProvider.stateRef.state === "computePopulation") {
+      // Handle compute population logic here
+      this.actionProvider.handleComputePopulation(message);
+    } else if (this.actionProvider.stateRef.name) {
       this.actionProvider.handleAMA(message);
     } else {
       this.actionProvider.addNameToState(message);

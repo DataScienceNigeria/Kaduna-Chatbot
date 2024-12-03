@@ -62,6 +62,10 @@ export const fetchComputePopulation = (hc_name, settlement_name, popValue) =>
   fetchData(
     "lga/ward/hospital", [hc_name], `settlement/${settlement_name}/totalpop/${popValue}`
   );
+export const fetchComputeFamilyPlanning = (hc_name, settlement_name, popValue) =>
+  fetchData(
+    "lga/ward/hospital", [hc_name], `settlement/${settlement_name}/totalpop/${popValue}/familyplanning_commodities`
+  );
 
   export const fectchCatchmentMap = async () => {
 

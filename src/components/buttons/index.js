@@ -168,7 +168,13 @@ const Buttons = (props) => {
       case "compute population":
         const selectedSettlement = props.actionProvider.stateRef.selectedSettlement;
         props.actionProvider.enterChatText(`Enter the population of ${selectedSettlement}`);
-        props.actionProvider.handleTyping(true);
+        props.actionProvider.handleTypingC(true);
+        break;
+      
+      case "compute comodities":
+        props.actionProvider.addComputeCommoditiesToState(
+          props.actionProvider.stateRef.popValue
+        );
         break;
 
       case "consumables":
