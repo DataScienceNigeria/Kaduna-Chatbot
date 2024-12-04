@@ -21,6 +21,7 @@ const config = {
     selectedHc: "",
     selectedSettlement: "",
     popValue: "",
+    population: "",
     buttons: [],
     previousCommand: [],
     counter: 0,

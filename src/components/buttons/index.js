@@ -172,7 +172,7 @@ const Buttons = (props) => {
         break;
       
       case "compute commodities":
-        console.log("Current value of popValue:", props.actionProvider?.stateRef?.popValue);
+        console.log("Current value of popValue:", props.actionProvider.stateRef);
         props.actionProvider.addComputeCommoditiesToState(
           props.actionProvider.stateRef.popValue
         );
@@ -187,6 +187,36 @@ const Buttons = (props) => {
       case "facility tools":
         props.actionProvider.fetchFacilityToolsForSettlement(
           props.actionProvider.stateRef.selectedSettlement
+        );
+        break;
+
+      case "compute family planning":
+        props.actionProvider.fetchComputeFamilyPlanningForSettlement(
+          props.actionProvider.stateRef.popValue
+        );
+        break;
+      
+      case "compute immunization":
+        props.actionProvider.fetchComputeFamilyPlanningForSettlement(
+          props.actionProvider.stateRef.popValue
+        );
+        break;
+
+      case "compute malaria icm and more":
+        props.actionProvider.fetchComputeFamilyPlanningForSettlement(
+          props.actionProvider.stateRef.popValue
+        );
+        break;
+
+      case "compute consumables":
+        props.actionProvider.fetchComputeFamilyPlanningForSettlement(
+          props.actionProvider.stateRef.popValue
+        );
+        break;
+
+      case "compute facility tools":
+        props.actionProvider.fetchComputeFamilyPlanningForSettlement(
+          props.actionProvider.stateRef.popValue
         );
         break;
 

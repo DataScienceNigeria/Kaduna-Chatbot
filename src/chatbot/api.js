@@ -66,6 +66,22 @@ export const fetchComputeFamilyPlanning = (hc_name, settlement_name, popValue) =
   fetchData(
     "lga/ward/hospital", [hc_name], `settlement/${settlement_name}/totalpop/${popValue}/familyplanning_commodities`
   );
+export const fetchComputeImmunization = (hc_name, settlement_name, popValue) =>
+  fetchData(
+    "lga/ward/hospital", [hc_name], `settlement/${settlement_name}/totalpop/${popValue}/immunization_commodities`
+  );
+export const fetchComputeMalaria = (hc_name, settlement_name, popValue) =>
+  fetchData(
+    "lga/ward/hospital", [hc_name], `settlement/${settlement_name}/totalpop/${popValue}/malaria_commodities`
+  );
+export const fetchComputeConsumables = (hc_name, settlement_name, popValue) =>
+  fetchData(
+    "lga/ward/hospital", [hc_name], `settlement/${settlement_name}/totalpop/${popValue}/consumable_commodities`
+  );
+export const fetchComputeHFTool = (hc_name, settlement_name, popValue) =>
+  fetchData(
+    "lga/ward/hospital", [hc_name], `settlement/${settlement_name}/totalpop/${popValue}/hftool_commodities`
+  );
 
   export const fectchCatchmentMap = async () => {
 

@@ -16,8 +16,13 @@ import {
   fetchConsumables,
   fectchCatchmentMap,
   fetchComputePopulation,
+  fetchComputeImmunization,
+  fetchComputeMalaria,
   answerQuestion,
   fectchWeatherInfo,
+  fetchComputeFamilyPlanning,
+  fetchComputeConsumables,
+  fetchComputeHFTool,
 } from "./api";
 import React from "react";
 
@@ -529,6 +534,7 @@ class ActionProvider {
       this.addMessageToState(errorMessage);
     }
   };
+
   fetchProfileForSettlement = async (settlement_name) => {
     try {
       this.loader();
@@ -904,6 +910,241 @@ class ActionProvider {
     );
   };
 
+  fetchComputeFamilyPlanningForSettlement = async (popValue) => {
+    try {
+      this.loader();
+      const settlement = this.stateRef.selectedSettlement;
+      const hcName = this.stateRef.selectedHc;
+      const data = await fetchComputeFamilyPlanning(hcName, settlement, popValue);
+      console.log(data);
+
+      this.RemoveLoader();
+
+      if (data.error) {
+        const errorMessage = this.createChatBotMessage(
+          `Error fetching settlement Facility Tools details: ${data.error}`
+        );
+        this.addMessageToState(errorMessage);
+      } else {
+        const message = this.createChatBotMessage(
+          <Textbox {...data} type={"family"} />,
+          { widget: "unknown" }
+        );
+        this.addMessageToState(message);
+
+        this.setState((prevState) => ({
+          ...prevState,
+          buttons: ["Yes, go back", "No, end this chat"],
+        }));
+
+        const message1 = this.createChatBotMessage(
+          "Do you want to go back to previous menu?",
+          { widget: "buttons" }
+        );
+        this.addMessageToState(message1);
+      }
+    } catch (error) {
+      console.error("Error fetching settlement Facility Tools:", error);
+      this.RemoveLoader();
+      const errorMessage = this.createChatBotMessage(
+        "Sorry, there was an error computing Tools Details. Please try again later."
+      );
+      this.addMessageToState(errorMessage);
+    }
+    this.addPreviousCommandToState(
+      this.fetchComputeFamilyPlanning,
+      popValue
+    );
+  };
+
+  fetchComputeImmunizationForSettlement = async (popValue) => {
+    try {
+      this.loader();
+      const settlement = this.stateRef.selectedSettlement;
+      const hcName = this.stateRef.selectedHc;
+      const data = await fetchComputeImmunization(hcName, settlement, popValue);
+      console.log(data);
+
+      this.RemoveLoader();
+
+      if (data.error) {
+        const errorMessage = this.createChatBotMessage(
+          `Error fetching settlement Facility Tools details: ${data.error}`
+        );
+        this.addMessageToState(errorMessage);
+      } else {
+        const message = this.createChatBotMessage(
+          <Textbox {...data} type={"immunization"} />,
+          { widget: "unknown" }
+        );
+        this.addMessageToState(message);
+
+        this.setState((prevState) => ({
+          ...prevState,
+          buttons: ["Yes, go back", "No, end this chat"],
+        }));
+
+        const message1 = this.createChatBotMessage(
+          "Do you want to go back to previous menu?",
+          { widget: "buttons" }
+        );
+        this.addMessageToState(message1);
+      }
+    } catch (error) {
+      console.error("Error fetching settlement Facility Tools:", error);
+      this.RemoveLoader();
+      const errorMessage = this.createChatBotMessage(
+        "Sorry, there was an error computing Tools Details. Please try again later."
+      );
+      this.addMessageToState(errorMessage);
+    }
+    this.addPreviousCommandToState(
+      this.fetchComputeImmunization,
+      popValue
+    );
+  };
+
+  fetchComputeMalariaForSettlement = async (popValue) => {
+    try {
+      this.loader();
+      const settlement = this.stateRef.selectedSettlement;
+      const hcName = this.stateRef.selectedHc;
+      const data = await fetchComputeMalaria(hcName, settlement, popValue);
+      console.log(data);
+
+      this.RemoveLoader();
+
+      if (data.error) {
+        const errorMessage = this.createChatBotMessage(
+          `Error fetching settlement Facility Tools details: ${data.error}`
+        );
+        this.addMessageToState(errorMessage);
+      } else {
+        const message = this.createChatBotMessage(
+          <Textbox {...data} type={"malaria"} />,
+          { widget: "unknown" }
+        );
+        this.addMessageToState(message);
+
+        this.setState((prevState) => ({
+          ...prevState,
+          buttons: ["Yes, go back", "No, end this chat"],
+        }));
+
+        const message1 = this.createChatBotMessage(
+          "Do you want to go back to previous menu?",
+          { widget: "buttons" }
+        );
+        this.addMessageToState(message1);
+      }
+    } catch (error) {
+      console.error("Error fetching settlement Facility Tools:", error);
+      this.RemoveLoader();
+      const errorMessage = this.createChatBotMessage(
+        "Sorry, there was an error computing Tools Details. Please try again later."
+      );
+      this.addMessageToState(errorMessage);
+    }
+    this.addPreviousCommandToState(
+      this.fetchComputeMalaria,
+      popValue
+    );
+  };
+
+  fetchComputeConsumablesForSettlement = async (popValue) => {
+    try {
+      this.loader();
+      const settlement = this.stateRef.selectedSettlement;
+      const hcName = this.stateRef.selectedHc;
+      const data = await fetchComputeConsumables(hcName, settlement, popValue);
+      console.log(data);
+
+      this.RemoveLoader();
+
+      if (data.error) {
+        const errorMessage = this.createChatBotMessage(
+          `Error fetching settlement Facility Tools details: ${data.error}`
+        );
+        this.addMessageToState(errorMessage);
+      } else {
+        const message = this.createChatBotMessage(
+          <Textbox {...data} type={"consumables"} />,
+          { widget: "unknown" }
+        );
+        this.addMessageToState(message);
+
+        this.setState((prevState) => ({
+          ...prevState,
+          buttons: ["Yes, go back", "No, end this chat"],
+        }));
+
+        const message1 = this.createChatBotMessage(
+          "Do you want to go back to previous menu?",
+          { widget: "buttons" }
+        );
+        this.addMessageToState(message1);
+      }
+    } catch (error) {
+      console.error("Error fetching settlement Facility Tools:", error);
+      this.RemoveLoader();
+      const errorMessage = this.createChatBotMessage(
+        "Sorry, there was an error computing Tools Details. Please try again later."
+      );
+      this.addMessageToState(errorMessage);
+    }
+    this.addPreviousCommandToState(
+      this.fetchComputeConsumables,
+      popValue
+    );
+  };
+
+  fetchComputeHFToolForSettlement = async (popValue) => {
+    try {
+      this.loader();
+      const settlement = this.stateRef.selectedSettlement;
+      const hcName = this.stateRef.selectedHc;
+      const data = await fetchComputeHFTool(hcName, settlement, popValue);
+      console.log(data);
+
+      this.RemoveLoader();
+
+      if (data.error) {
+        const errorMessage = this.createChatBotMessage(
+          `Error fetching settlement Facility Tools details: ${data.error}`
+        );
+        this.addMessageToState(errorMessage);
+      } else {
+        const message = this.createChatBotMessage(
+          <Textbox {...data} type={"hftool"} />,
+          { widget: "unknown" }
+        );
+        this.addMessageToState(message);
+
+        this.setState((prevState) => ({
+          ...prevState,
+          buttons: ["Yes, go back", "No, end this chat"],
+        }));
+
+        const message1 = this.createChatBotMessage(
+          "Do you want to go back to previous menu?",
+          { widget: "buttons" }
+        );
+        this.addMessageToState(message1);
+      }
+    } catch (error) {
+      console.error("Error fetching settlement Facility Tools:", error);
+      this.RemoveLoader();
+      const errorMessage = this.createChatBotMessage(
+        "Sorry, there was an error computing Tools Details. Please try again later."
+      );
+      this.addMessageToState(errorMessage);
+    }
+    this.addPreviousCommandToState(
+      this.fetchComputeHFTool,
+      popValue
+    );
+  };
+
   addMessageToState = (message) => {
     this.setState((prevState) => ({
       ...prevState,
@@ -974,13 +1215,13 @@ class ActionProvider {
     }));
     this.addPreviousCommandToState(this.addSettlementToState, settlement);
   };
-  addComputeCommoditiesToState = (population) => {
+  addComputeCommoditiesToState = (popValue) => {
     const checkBack = this.stateRef.goBack;
 
-    this.setState((prevState) => ({
-      ...prevState,
-      popValue: population,
-    }));
+    // this.setState((prevState) => ({
+    //   ...prevState,
+    //   popValue: popValue,
+    // }));
 
     // Add the bot message and options after a settlement is selected
     const computeOptions = [
@@ -1000,8 +1241,9 @@ class ActionProvider {
       ...prevState,
       buttons: computeOptions,
       counter: checkBack ? prevState.counter : prevState.counter + 1,
+      popValue: popValue
     }));
-    this.addPreviousCommandToState(this.ComputeCommoditiesToState, population);
+    this.addPreviousCommandToState(this.addComputeCommoditiesToState, popValue);
   };
   addPopulationToState = (settlement) => {
     this.setState((prevState) => ({ ...prevState, population: settlement }));
@@ -1009,7 +1251,7 @@ class ActionProvider {
     this.addPreviousCommandToState(this.addPopulationToState, settlement);
   };
   addComputePopulationToState = (popValue) => {
-    this.setState((prevState) => ({ ...prevState, population: popValue }));
+    this.setState((prevState) => ({ ...prevState, popValue: popValue }));
     this.fetchComputePopulation(popValue);
     this.addPreviousCommandToState(this.addComputePopulationToState, popValue);
   };
@@ -1198,6 +1440,7 @@ class ActionProvider {
         this.setState((prevState) => ({
           ...prevState,
           buttons: ["Compute commodities", "No, end this chat"],
+          popValue: popValue,
         }));
   
         const message1 = this.createChatBotMessage(
@@ -1214,11 +1457,10 @@ class ActionProvider {
       );
       this.addMessageToState(errorMessage);
     }
-  
-    // this.addPreviousCommandToState(
-    //   this.fetchComputePopulation,
-    //   popValue
-    // );
+    this.addPreviousCommandToState(
+      this.handleComputePopulation,
+      popValue
+    );
   };
 
   showButtons = (params) => {
