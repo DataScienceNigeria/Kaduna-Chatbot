@@ -421,45 +421,45 @@ def compute_settlement_immunization(hospital, settlement, total_pop):
     data = {}
 
     BCG = ((total_pop * 0.04) * 0.9 * 1 * 3.33) + (((total_pop * 0.04) * 0.9 * 1 * 3.33) * 0.25)
-    data['BCG'] = format_count(BCG)
+    data['bcg'] = format_count(BCG)
     bOPV = ((total_pop * 0.04) * 0.9 * 1 * 1.33) + (((total_pop * 0.04) * 0.9 * 1 * 1.33) * 0.25)
-    data['bOPV'] = format_count(bOPV)
+    data['bopv'] = format_count(bOPV)
     HepBo = ((total_pop * 0.04) * 0.9 * 1 * 1.43) + (((total_pop * 0.04) * 0.9 * 1 * 1.43) * 0.25)
-    data['HepBo'] = format_count(HepBo)
+    data['hepbo'] = format_count(HepBo)
     IPV = ((total_pop * 0.04) * 0.9 * 1 * 3.33) + (((total_pop * 0.04) * 0.9 * 1 * 3.33) * 0.25)
-    data['IPV'] = format_count(IPV)
+    data['ipv'] = format_count(IPV)
     Penta = ((total_pop * 0.04) * 0.9 * 3 * 1.43) + (((total_pop * 0.04) * 0.9 * 3 * 1.43) * 0.25)
-    data['Penta'] = format_count(Penta)
+    data['penta'] = format_count(Penta)
     PCV = ((total_pop * 0.04) * 0.9 * 3 * 1.1) + (((total_pop * 0.04) * 0.9 * 3 * 1.1) * 0.25)
-    data['PCV'] = format_count(PCV)
+    data['pcv'] = format_count(PCV)
     Measles = ((total_pop * 0.04) * 0.9 * 2 * 1.43) + (((total_pop * 0.04) * 0.9 * 2 * 1.43) * 0.25)
-    data['Measles'] = format_count(Measles)
+    data['measles'] = format_count(Measles)
     Td = ((total_pop * 0.05) * 0.9 * 5 * 1.33) + (((total_pop * 0.05) * 0.9 * 5 * 1.33) * 0.25)
-    data['Td'] = format_count(Td)
+    data['td'] = format_count(Td)
     MenA = ((total_pop * 0.04) * 0.9 * 1 * 1.33) + (((total_pop * 0.04) * 0.9 * 1 * 1.33) * 0.25)
-    data['MenA'] = format_count(MenA)
+    data['mena'] = format_count(MenA)
     Yellow_fever = ((total_pop * 0.04) * 0.9 * 1 * 1.43) + (((total_pop * 0.04) * 0.9 * 1 * 1.43) * 0.25)
-    data['Yellow fever'] = format_count(Yellow_fever)
+    data['yellow_fever'] = format_count(Yellow_fever)
     Covid_19 = total_pop * 0.5
-    data['Covid-19'] = format_count(Covid_19)
+    data['covid_19'] = format_count(Covid_19)
     AD_0_05ml = (total_pop * 0.04) * 0.9 * 1 * 1.1 * 1.25
-    data['AD 0.05ml'] = format_count(AD_0_05ml)
+    data['ad0_05'] = format_count(AD_0_05ml)
     AD_0_5ml = (total_pop * 0.04) * 0.9 * 3 * 1.25
-    data['AD 0.5ml'] = format_count(AD_0_5ml)
+    data['ad_0_5ml'] = format_count(AD_0_5ml)
     Recon_2ml = BCG / 20
-    data['Recon 2ml'] = format_count(Recon_2ml)
+    data['recon2ml'] = format_count(Recon_2ml)
     Recon_5ml = (Measles + MenA + Yellow_fever) / 10
-    data['Recon 5ml'] = format_count(Recon_5ml)
+    data['recon5ml'] = format_count(Recon_5ml)
     BCG_diluent = BCG / 20
-    data['BCG diluent'] = format_count(BCG_diluent)
+    data['bcg_diluent'] = format_count(BCG_diluent)
     Measles_diluent = Measles / 10
-    data['Measles diluent'] = format_count(Measles_diluent)
+    data['measles_diluent'] = format_count(Measles_diluent)
     Yellow_fever_diluent = Yellow_fever / 10
-    data['Yellow fever diluent'] = format_count(Yellow_fever_diluent)
+    data['yellow_fever_diluent'] = format_count(Yellow_fever_diluent)
     Droppers = bOPV / 20
-    data['Droppers'] = format_count(Droppers)
+    data['droppers'] = format_count(Droppers)
     Safety_boxes = (BCG + HepBo + IPV + Penta + PCV + Measles + Td + MenA + Yellow_fever) / 100
-    data['Safety boxes'] = format_count(Safety_boxes)
+    data['safety_boxes'] = format_count(Safety_boxes)
     
     return jsonify(data)
 
@@ -481,15 +481,15 @@ def compute_settlement_familyplanning(hospital, settlement, total_pop):
     depo_provera_inj = format_count(0.346 * (total_pop * 0.22) * 1.1)
     nortisterat_inj = format_count(0.346 * (total_pop * 0.22) * 1.1)
     
-    data['MINI PILLS'] = mini_pills
-    data['COMBINE PILLS'] = combine_pills
-    data['MALE CONDOM'] = male_condom
-    data['FEMALE CONDOM'] = female_condom
-    data['IUCD'] = iucd
-    data['IMPALANON (IMPLANT)'] = impalanon_implant
-    data['JADEL (IMPLANT)'] = jadel_implant
-    data['DEPO-PROVERA INJ'] = depo_provera_inj
-    data['NORTISTERAT INJ'] = nortisterat_inj
+    data['mini_pills'] = mini_pills
+    data['combine_pills'] = combine_pills
+    data['male_condom'] = male_condom
+    data['female_condom'] = female_condom
+    data['iucd'] = iucd
+    data['impalanon_implant'] = impalanon_implant
+    data['jadel_implant'] = jadel_implant
+    data['depo_provera_inj'] = depo_provera_inj
+    data['nortisterat_inj'] = nortisterat_inj
     
     return jsonify(data)
 
@@ -510,15 +510,15 @@ def compute_settlement_malaria(total_pop, hospital, settlement):
     vit_a = format_count(0.80 * (0.18 * total_pop))
 
     data = {
-        "RDT for Malaria": rdt_malaria,
-        "ACT": act,
-        "Paracetamol Syrup": paracetamol_syrup,
-        "Zinc ORS": zinc_ors,
-        "Disposable Amoxycillin DT": disposable_amoxycillin,
-        "Fesolate Tabs": fesolate_tabs,
-        "Folic Acid": folic_acid,
-        "Determine": determine,
-        "Vit-A": vit_a
+        "rdt_for_malaria": rdt_malaria,
+        "act": act,
+        "paracetamol_syrup": paracetamol_syrup,
+        "zinc_ors": zinc_ors,
+        "disposible_amoxycillin_dt": disposable_amoxycillin,
+        "fesolate_tabs": fesolate_tabs,
+        "folic_acid": folic_acid,
+        "determine": determine,
+        "vit_a": vit_a
     }
 
     return data
@@ -547,20 +547,20 @@ def compute_settlement_consumables(total_pop, hospital, settlement):
     table_napkin = format_count(0.035 * (total_pop * 0.22) * 1.1)
 
     # Populate the dictionary with constant and calculated values
-    data['Cotton Wool 100g (1 per HF)'] = cotton_wool_100g
-    data['Plaster Elastoplast (1 per HF)'] = plaster_elastoplast
-    data['Plaster (Big)'] = plaster_big
-    data['Xylocain Injection (20 ML) per HF'] = xylocain_injection
-    data['Methylated Spirit (1 per HF)'] = methylated_spirit
-    data['PT Test Kit (PKT 20)'] = pt_test_kit
-    data['Urine Bottle'] = urine_bottle
-    data['Jik (1 Litre) per HF'] = jik
-    data['Disposable Gloves (PKT 100)'] = disposable_gloves
-    data['Sterile Gloves (PKT 50)'] = sterile_gloves
-    data['Liquid Soap (50 ML) per HF'] = liquid_soap
+    data['cotton_wool'] = cotton_wool_100g
+    data['plaster_elastoplast'] = plaster_elastoplast
+    data['plaster_big'] = plaster_big
+    data['xylocain_injection'] = xylocain_injection
+    data['methylated_sipirit'] = methylated_spirit
+    data['pt_test_kit'] = pt_test_kit
+    data['urine_bottle'] = urine_bottle
+    data['jik'] = jik
+    data['disposable_gloves'] = disposable_gloves
+    data['sterile_gloves'] = sterile_gloves
+    data['liquid_soap'] = liquid_soap
     data['Under-Lid'] = under_lid
-    data['Tincture of Iodine (20 ML) prt HF'] = tincture_of_iodine
-    data['Table Napkin (Roll)'] = table_napkin
+    data['tincture_of_iodine'] = tincture_of_iodine
+    data['table_napkin'] = table_napkin
 
     return data
 
@@ -590,22 +590,22 @@ def compute_settlement_hftools(total_pop, hospital, settlement):
     envelopes = format_count((2 * (0.8 * (total_pop * 0.05) * 30 * 1.1)) * 1.1)
 
     # Populate the dictionary with constant and calculated values
-    data['OPD Register (1 per HF)'] = opd_register
-    data['FP Register (1 per HF)'] = fp_register
-    data['Immunization Register (1 per HF)'] = immunization_register
-    data['ANC Register (1 per HF)'] = anc_register
-    data['PMCTCT - HCT Register (1 per HF)'] = pmctct_hct_register
-    data['GMP Register (1 per HF)'] = gmp_register
-    data['Out /Mobile Monthly Summary (1 per HF)'] = out_mobile_monthly_summary
-    data['health_facility NHMIS Monthly Summary (1 per HF)'] = health_facility_nhmis_monthly_summary
-    data['HIV Client Intake Form (1 per HF)'] = hiv_client_intake_form
-    data['HIV Request & Result Form (1 per HF)'] = hiv_request_result_form
-    data['Referral Forms (1 per HF)'] = referral_forms
-    data['Imm Card'] = imm_card
-    data['Family Planning Card'] = family_planning_card
-    data['ANC Card'] = anc_card
-    data['Leaflets'] = leaflets
-    data['Envelopes'] = envelopes
+    data['opd_register'] = opd_register
+    data['fp_register'] = fp_register
+    data['immunization_register'] = immunization_register
+    data['anc_register'] = anc_register
+    data['pmctct_hct_register'] = pmctct_hct_register
+    data['gmp_register'] = gmp_register
+    data['out_mobile_monthly_summary'] = out_mobile_monthly_summary
+    data['health_facility_nhmis_monthly_summary'] = health_facility_nhmis_monthly_summary
+    data['hiv_client_intake_form'] = hiv_client_intake_form
+    data['hiv_request_result_form'] = hiv_request_result_form
+    data['referral_forms'] = referral_forms
+    data['imm_card'] = imm_card
+    data['family_planning_card'] = family_planning_card
+    data['anc_card'] = anc_card
+    data['leaflets'] = leaflets
+    data['envelopes'] = envelopes
 
     return data
 
