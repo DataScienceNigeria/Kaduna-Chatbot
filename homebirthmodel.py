@@ -16,6 +16,7 @@ def predict_outcome():
     data = request.get_json()
 
     # Extract the features from the request data
+    set_name = int(data.get('set_name'))
     last_birth_caesarean = int(data.get('last_birth_caesarean'))
     religion = int(data.get('religion'))
     num_living_children = int(data.get('num_living_children'))
@@ -40,6 +41,7 @@ def predict_outcome():
 
     # Combine all inputs into a feature array
     features = np.array([
+        set_name,
         religion,
         residence_type,
         last_birth_caesarean,
